@@ -1,0 +1,178 @@
+$accent-color: #AF996B;
+
+.custom-card {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  height: 15rem;
+}
+
+.first-card {
+  transition: all 0.5s;
+  background-image: url('../../assets/img/sneakers.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+
+.first-card:hover {
+  transition: all 0.5s;
+  background-image: url('../../assets/img/sneakers.jpg');
+  background-repeat: no-repeat;
+  background-size: 110% 110%;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.second-card {
+  transition: all 0.5s;
+  background-image: url('../../assets/img/q-clothes.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+
+.second-card:hover {
+  transition: all 0.5s;
+  background-image: url('../../assets/img/q-clothes.jpg');
+  background-repeat: no-repeat;
+  background-size: 110% 110%;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.carousel {
+  margin: 0px;
+}
+
+.divider {
+  border: 0.5px solid rgb(228, 228, 228);
+}
+
+.text-small {
+  font-size: 13px;
+  transition: all 0.9s;
+}
+
+.text-small:hover {
+  font-size: 13px;
+  color: $accent-color !important;
+  transition: all 0.9s;
+}
+
+.text-decoration-none {
+  text-decoration: none;
+}
+
+.card {
+  border: none;
+}
+
+.text-accent {
+  color: $accent-color;
+  transition: all 0.5s;
+}
+
+.text-accent:hover {
+  color: gray;
+  transition: all 0.5s;
+}
+
+.text-gray {
+  color: gray;
+  transition: all 0.5s;
+}
+
+.text-gray:hover {
+  color: $accent-color;
+  transition: all 0.5s;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.rounded-container {
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgb(209, 209, 209);
+  border-radius: 30px;
+}
+
+.icon {
+  font-size: 20px;
+}
+
+.vl {
+  border-left: 1px solid rgb(209, 209, 209);
+  height: 50px;
+}
+
+.last-card {
+  width: 23rem !important;
+
+}
+
+.footer-men-card {
+  transition: all 0.5s;
+  background-image: url('../../assets/img/footer-men.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+
+.footer-men-card:hover {
+  transition: all 0.5s;
+  background-image: url('../../assets/img/footer-men.jpg');
+  background-repeat: no-repeat;
+  background-size: 110% 110%;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.footer-women-card {
+  transition: all 0.5s;
+  background-image: url('../../assets/img/footer-women.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+
+.footer-women-card:hover {
+  transition: all 0.5s;
+  background-image: url('../../assets/img/footer-women.jpg');
+  background-repeat: no-repeat;
+  background-size: 110% 110%;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+@media screen and (max-width: 414px) {
+  .hide {
+    display: none;
+  }
+
+  .card {
+    width: 21.5rem !important;
+  }
+}

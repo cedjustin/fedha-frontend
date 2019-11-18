@@ -1,0 +1,72 @@
+$accent-color: #AF996B;
+$gray: gray;
+
+.choco-body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: $accent-color;
+  position: absolute;
+  top: 0px;
+}
+
+.white-body {
+  margin: 20px;
+  background-color: white
+}
+
+.text-dark {
+  color: black
+}
+
+.text-gray {
+  color: $gray,
+}
+
+.text-small-light {
+  font-size: 12px;
+}
+
+.b-border-small {
+  border-bottom: 0.5px solid rgb(228, 228, 228);
+}
+
+.t-border-small {
+  border-top: 0.5px solid rgb(228, 228, 228);
+}
+
+.header-icon {
+  font-size: 15px;
+  color: $accent-color
+}
+
+.footer-icon {
+  font-size: 15px;
+  color: black;
+  margin: 10px;
+  transition: all 0.5s
+}
+
+.footer-icon:hover {
+  font-size: 15px;
+  color: $accent-color;
+  margin: 10px;
+  transition: all 0.5s
+}
+
+.dropdown-item:active {
+  background-color: $accent-color;
+}
+
+.active {
+  color: $accent-color !important
+}
+
+.space-around{
+    justify-content: space-around;
+}
+
+@media screen and (max-width: 414px) {
+  .hide {
+    display: none;
+  }
+}

@@ -1,0 +1,7 @@
+{
+    "/api/*": {
+        "target": "https://fedha.herokuapp.com/api/",
+        "secure": false,
+        "logLevel": "debug"
+    }
+}

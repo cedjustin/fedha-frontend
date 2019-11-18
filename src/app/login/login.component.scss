@@ -1,0 +1,37 @@
+$accent-color: #AF996B;
+
+.form-control {
+  margin: 5px
+}
+
+.bg-accent {
+  background-color: $accent-color;
+  border: none
+}
+
+.text-input {
+  width: 300px !important;
+  border: none;
+  background-color: none;
+  border-radius: 25px;
+}
+
+.rounded-button {
+  border-radius: 25px;
+}
+
+.main-container {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.w-100 {
+  width: 110%;
+  height: 100%;
+}
+
+@media screen and (max-width: 414px) {
+  .hide {
+    display: none;
+  }
+}
