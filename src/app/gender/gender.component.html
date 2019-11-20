@@ -1,0 +1,186 @@
+<ng-template [ngIf]="loadingData == 1">
+  <div class="alert alert-primary" role="alert">
+    Loading information.....
+  </div>
+</ng-template>
+
+<ng-template [ngIf]="noGender">
+  <div class="alert alert-success" role="alert">
+    You dont have any gender set
+  </div>
+</ng-template>
+
+<ng-template [ngIf]="noCategory">
+  <div class="alert alert-success" role="alert">
+    You dont have any category set
+  </div>
+</ng-template>
+
+
+<!--alert to show that the connection is down-->
+<ng-template [ngIf]="connection.error == 1">
+  <div class="alert alert-warning fade show" role="alert">
+    {{connection.message}}.
+  </div>
+</ng-template>
+
+<!--start of first container-->
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="d-flex justify-content-center">
+        <img src="../../assets/img/gender.svg" class="undraws" alt="...">
+      </div>
+      <div class="d-flex justify-content-center">
+        <span class="lead">Gender</span>
+      </div>
+      <div class="card-columns mt-5">
+        <div class="card" style="width: 10rem;" *ngFor="let gender of genders" data-toggle="modal"
+        data-target="#editGenderModal" (click)="_editGender(gender)">
+          <div class="card-body d-flex justify-content-center capitalized">
+            <h3>{{gender.name}}</h3>
+          </div>
+        </div>
+        <div class="card" style="width: 10rem;">
+          <div class="card-body d-flex justify-content-center">
+            <div class="btn plus-btn d-flex align-items-center justify-content-center" data-toggle="modal"
+              data-target="#genderModal">
+              <i class="fa fa-plus plus-icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="d-flex justify-content-center">
+        <img src="../../assets/img/category.svg" class="undraws" alt="...">
+      </div>
+      <div class="d-flex justify-content-center">
+        <span class="lead">Category</span>
+      </div>
+      <div class="card-columns mt-5">
+        <div class="card" style="width: 10rem;" *ngFor="let category of categories" data-toggle="modal"
+        data-target="#editCategoryModal" (click)="_editCategory(category)">
+          <div class="card-body d-flex justify-content-center capitalized">
+            <h3>{{category.name}}</h3>
+          </div>
+        </div>
+        <div class="card" style="width: 10rem;">
+          <div class="card-body d-flex justify-content-center">
+            <div class="btn plus-btn d-flex align-items-center justify-content-center" data-toggle="modal"
+              data-target="#categoryModal">
+              <i class="fa fa-plus plus-icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end of first container-->
+
+<!--start of gender modal-->
+<div class="modal fade" id="genderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Gender</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Gender" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="gender.name">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="_addGender()" data-dismiss="modal">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end of gender modal-->
+
+<!--start of category modal-->
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Category" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="category.name">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="_addCategory()" data-dismiss="modal">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end of gender modal-->
+
+<!--start of gender modal-->
+<div class="modal fade" id="editGenderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Gender</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Gender" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="currentGender.name">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="_delGender()" data-dismiss="modal">Delete</button>
+        <button type="button" class="btn btn-primary" (click)="_addGender()" data-dismiss="modal">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end of gender modal-->
+
+<!--start of category modal-->
+<div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Category" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="currentCategory.name">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="_delCategory()" data-dismiss="modal">Delete</button>
+        <button type="button" class="btn btn-primary" (click)="_updCategory()" data-dismiss="modal">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end of gender modal-->

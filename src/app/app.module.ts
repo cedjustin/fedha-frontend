@@ -17,6 +17,7 @@ import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './token-interceptor.service';
 import { DashPostComponent } from './dash-post/dash-post.component';
 import { RatingModule } from 'ng-starrating';
+import { GenderComponent } from './gender/gender.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { RatingModule } from 'ng-starrating';
     LoginComponent,
     AdminComponent,
     DashboardComponent,
-    DashPostComponent
+    DashPostComponent,
+    GenderComponent
   ],
   imports: [
     BrowserModule,

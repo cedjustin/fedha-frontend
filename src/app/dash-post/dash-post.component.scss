@@ -64,5 +64,16 @@ $accent-color: #AF996B;
 }
 
 .cards-columns {
-  column-count: 3;
+  flex-direction: row;
+}
+
+.row {
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.undraws {
+  width: 250px;
+  height: 125px;
 }

@@ -4,6 +4,13 @@
   </div>
 </ng-template>
 
+<!--alert to show that the connection is down-->
+<ng-template [ngIf]="connection.error == 1">
+  <div class="alert alert-warning fade show" role="alert">
+    {{connection.message}}.
+  </div>
+</ng-template>
+
 <!--start of first row-->
 <nav aria-label="Page navigation example" class="mt-3">
   <div class="dropdown">
@@ -20,18 +27,27 @@
 
 <!--start of second row-->
 <div class="card-columns mt-3">
-  <div class="card" style="width: 18rem!important;" *ngFor="let post of posts">
-    <img src="{{post.linkToImage}}" class="card-img-top" alt="...">
+  <div class="card" style="width: 22rem!important;" *ngFor="let post of posts">
+    <img src="{{post.linktoimage}}" class="card-img-top" alt="...">
     <div class="card-body">
       <div class="card-title">
-          <star-rating value="{{post.rate}}" checkedcolor="#AF996B" uncheckedcolor="gray" size="24px" readonly="false" (rate)="onRate($event)"></star-rating>
+        <span>In stock:</span><span> {{post.instock}}</span><span *ngIf="post.onsale == 1">/</span><strong
+          class="text-danger" *ngIf="post.onsale == 1"> on sale</strong>
       </div>
+      <star-rating value="{{post.rate}}" checkedcolor="#AF996B" uncheckedcolor="gray" size="24px" readonly="false"
+        (rate)="onRate($event)"></star-rating>
       <a href="#" class="text-decoration-none">
         <p class="card-text text-gray">{{post.description}}</p>
       </a>
       <div class="divider mt-4"></div>
-      <div class="mt-3">
+      <div class="mt-3 row">
         <span class="h6">{{ post.amount | currency:'RWF' }}</span>
+        <div>
+          <div class="btn btn-outline-primary btn-sm m-1">Edit</div>
+          <div class="btn btn-outline-secondary btn-sm m-1" data-target="#putOnSaleModal" data-toggle="modal"
+            *ngIf="post.onsale != 1" (click)="_getCurrentPost(post)">Sale</div>
+          <div class="btn btn-outline-danger btn-sm m-1" (click)="_delPost(post.id)">Delete</div>
+        </div>
       </div>
     </div>
   </div>
@@ -39,7 +55,7 @@
 <!--end of second row-->
 
 <!--start floating button-->
-<a href="#" class="float">
+<a class="float" data-toggle="modal" data-target="#exampleModal">
   <i class="fa fa-plus my-float"></i>
 </a>
 <!--end of floating button-->
@@ -62,3 +78,116 @@
   </ul>
 </nav>
 <!--end of third row-->
+
+<!--start of modal-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add a product</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-center">
+          <img src="../../assets/img/add-product.svg" class="undraws" alt="...">
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Description" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="post.description">
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Link to image" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="post.linktoimage">
+        </div>
+        <div class="input-group mb-3">
+          <input type="number" class="form-control" placeholder="Amount" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="post.amount">
+          <input type="number" class="form-control" placeholder="instock" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="post.instock">
+          <input type="number" class="form-control" placeholder="Rate" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="post.rate">
+          <input type="number" class="form-control" placeholder="Discount" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="post.discount">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="inputGroupSelect01">Category</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="post.genderid">
+              <option selected disabled>Gender...</option>
+              <option *ngFor="let gender of genders" value="{{gender.id}}">{{gender.name}}</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="post.categoryid">
+              <option selected disabled>Category...</option>
+              <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="_addPost()" data-dismiss="modal">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end of modal-->
+
+
+<!--start of modal-->
+<div class="modal fade" id="putOnSaleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Put on sale</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="d-flex justify-content-center">
+              <img src="../../assets/img/put-on-sale.svg" class="undraws" alt="...">
+            </div>
+            <div class="input-group mt-5">
+              <input type="number" class="form-control" placeholder="days" aria-label="Username"
+                aria-describedby="basic-addon1" [(ngModel)]="post.linktoimage">
+            </div>
+          </div>
+          <div class="col-md-6 d-flex justify-content-center">
+            <div class="card" style="width: 22rem!important;border:none">
+              <img src="{{currentPost.linktoimage}}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <div class="card-title">
+                  <span>In stock:</span><span> {{currentPost.instock}}</span>
+                  <span class="h6"> {{ currentPost.amount | currency:'RWF' }}</span>
+                </div>
+                <star-rating value="{{currentPost.rate}}" checkedcolor="#AF996B" uncheckedcolor="gray" size="24px"
+                  readonly="false" (rate)="onRate($event)"></star-rating>
+                <a href="#" class="text-decoration-none">
+                  <p class="card-text text-gray">{{currentPost.description}}</p>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end of modal-->

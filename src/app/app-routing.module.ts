@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth.guard';
 import { DashPostComponent } from './dash-post/dash-post.component';
+import { GenderComponent } from './gender/gender.component';
 
 
 const routes: Routes = [
@@ -27,7 +28,8 @@ const routes: Routes = [
         component: DashboardComponent,
         canActivate: [AuthGuard],
         children: [
-          { path: '', component: DashPostComponent }
+          { path: '', component: DashPostComponent },
+          { path: 'gender', component: GenderComponent },
         ]
       }
     ]

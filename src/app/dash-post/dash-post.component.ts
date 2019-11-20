@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dash-post',
@@ -11,16 +12,39 @@ export class DashPostComponent implements OnInit {
   // variable creation
   pages = [];
   offset = 0;
-  order = 'ASC';
+  order = 'DESC';
   sortBy = 'datecreated';
   posts: any;
+  post: object = {
+    description: null,
+    linktoimage: null,
+    amount: null,
+    instock: null,
+    rate: null,
+    discount: null,
+    genderid: null,
+    categoryid: null
+  };
   currentPage = 1;
   loadingProducts = 1;
+  connection = {
+    error: 0,
+    message: 'Connection is down'
+  };
+  categories: any;
+  genders: any;
+  currentPost: object = {
+    description: null,
+    instock: null,
+    amount: null,
+    rate: null,
+    linktoimage: null
+  };
 
 
 
 
-  constructor(private http: HttpService) { }
+  constructor(private http: HttpService, private router: Router) { }
 
   // get pagination numbers
   _getPages() {
@@ -38,7 +62,13 @@ export class DashPostComponent implements OnInit {
           this.pages = Array(i).fill(0).map((x, a) => ({ id: (a + 1), name: `Item ${a + 1}` }));
         }
       },
-      err => { console.log(err); }
+      err => {
+        this.loadingProducts = 0;
+        this.connection = {
+          error: 1,
+          message: 'Connection problem, check your internet and refresh the page'
+        };
+      }
     );
   }
 
@@ -47,13 +77,24 @@ export class DashPostComponent implements OnInit {
     this.loadingProducts = 1;
     this.http._getAllPosts(sortby, offset, order).subscribe(
       res => {
-        this.posts = res.response.data;
-        this.posts.forEach(post => {
-          post.rate = JSON.parse(post.rate);
-        });
-        this.loadingProducts = 0;
+        if (res.error === 1 && res.message === 'you are lost') {
+          localStorage.removeItem('token');
+          localStorage.removeItem('userinfo');
+          this.router.navigate(['/admin']);
+        } else {
+          this.posts = res.response.data;
+          this.posts.forEach(post => {
+            post.rate = JSON.parse(post.rate);
+          });
+          this.loadingProducts = 0;
+        }
       },
       err => {
+        this.loadingProducts = 0;
+        this.connection = {
+          error: 1,
+          message: 'Connection problem, check your internet and refresh the page'
+        };
         console.log(err);
       }
     );
@@ -73,9 +114,9 @@ export class DashPostComponent implements OnInit {
   }
 
   // on sort Page
-  _onSortChange(status) {
+  _onSortChange(status: any) {
     if (status === 'date descending') {
-      this.order = 'DESC';
+      this.order = 'ASC';
       this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
     } else if (status === 'amount high to low') {
       this.sortBy = 'amount';
@@ -86,17 +127,104 @@ export class DashPostComponent implements OnInit {
       this.order = 'DESC';
       this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
     } else {
-      this.order = 'ASC';
+      this.order = 'DESC';
       this.sortBy = 'datecreated';
       this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
     }
   }
 
-  // classes functions
+  // a function to get genders
+  _getGender() {
+    this.loadingProducts = 1;
+    this.http._getGender().subscribe(
+      res => {
+        if (res.response.error === 1 && res.response.message === 'you have no gender in db') {
+          this.loadingProducts = 0;
+          this.router.navigate(['/admin/dashboard/gender']);
+        } else {
+          this.loadingProducts = 0;
+          this.genders = res.response.data;
+        }
+      },
+      err => {
+        this.loadingProducts = 0;
+        this.connection = {
+          error: 1,
+          message: 'Connection problem, check your internet and refresh the page'
+        };
+        console.log(err);
+      }
+    );
+  }
+
+  // a function to get categories
+  _getCategory() {
+    this.loadingProducts = 1;
+    this.http._getCategory().subscribe(
+      res => {
+        if (res.response.error === 1 && res.response.message === 'you have no categories in db') {
+          this.loadingProducts = 0;
+          this.router.navigate(['/admin/dashboard/gender']);
+        } else {
+          this.loadingProducts = 0;
+          this.categories = res.response.data;
+        }
+      },
+      err => {
+        this.loadingProducts = 0;
+        this.connection = {
+          error: 1,
+          message: 'Connection problem, check your internet and refresh the page'
+        };
+        console.log(err);
+      }
+    );
+  }
+
+  // a function to add a post
+  _addPost() {
+    this.http._addPost(this.post).subscribe(
+      res => {
+        if (res.response.error === 0) {
+          this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
+        } else {
+          console.log(res.response);
+        }
+      },
+      err => {
+
+      }
+    );
+  }
+
+
+  // a function to delet post
+  _delPost(postid: any) {
+    this.http._delPost(postid).subscribe(
+      res => {
+        if (res.response.error === 0) {
+          this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
+        } else {
+
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  // get current post
+  _getCurrentPost(post: any) {
+    this.currentPost = post;
+    console.log(post.id);
+  }
 
   ngOnInit() {
     this._getPages();
     this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
+    this._getGender();
+    this._getCategory();
   }
 
 }
