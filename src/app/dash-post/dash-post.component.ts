@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dash-post',
@@ -34,12 +35,14 @@ export class DashPostComponent implements OnInit {
   categories: any;
   genders: any;
   currentPost: object = {
+    id: null,
     description: null,
     instock: null,
     amount: null,
     rate: null,
-    linktoimage: null
+    linktoimage: null,
   };
+  onSaleDays: number = null;
 
 
 
@@ -86,6 +89,7 @@ export class DashPostComponent implements OnInit {
           this.posts.forEach(post => {
             post.rate = JSON.parse(post.rate);
           });
+          this._checkIfSaleExp();
           this.loadingProducts = 0;
         }
       },
@@ -217,8 +221,88 @@ export class DashPostComponent implements OnInit {
   // get current post
   _getCurrentPost(post: any) {
     this.currentPost = post;
-    console.log(post.id);
   }
+
+
+  // put a post on sale
+  _putOnSale(postid: number) {
+    let onSaleObject: object = {
+      postid: null,
+      days: null
+    };
+
+    onSaleObject = {
+      postid,
+      days: this.onSaleDays
+    };
+
+    if (this.onSaleDays === null) { } else {
+      this.http._putPostOnSale(onSaleObject).subscribe(
+        res => {
+          if (res.response.error === 0) {
+            this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
+          } else {
+
+          }
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
+  }
+
+  // // get time remaining from end of sale
+  // _getMoment(time: any) {
+  //   const start = moment().format();
+  //   const end = moment(JSON.parse(time));
+  //   return end.from(start);
+  // }
+
+  // a function to check and reshape data if its not still on sale
+  _checkIfSaleExp() {
+    this.posts.forEach(post => {
+      if (post.onsale === '1') {
+        const start = moment().format();
+        const end = moment(JSON.parse(post.saleexp));
+        if (!end.isAfter(start) === true) {
+          this._removeFromSale(post);
+          post.onsale = 0;
+          post.saleexp = 0;
+        } else { }
+      } else { }
+    });
+  }
+
+  // a function to make expired sale not onsale
+  _removeFromSale(post: object) {
+    let data: object = {
+      postid: null
+    };
+    // @ts-ignore
+    data.postid = post.id;
+    this.http._putPostFromSale(data).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  // function to update post
+  _updPost() {
+    this.http._updPost(this.currentPost).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
 
   ngOnInit() {
     this._getPages();

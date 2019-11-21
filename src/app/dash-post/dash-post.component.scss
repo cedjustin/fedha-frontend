@@ -63,8 +63,8 @@ $accent-color: #AF996B;
   transition: all 0.5s;
 }
 
-.cards-columns {
-  flex-direction: row;
+.card-columns {
+  column-count: 5!important;  
 }
 
 .row {

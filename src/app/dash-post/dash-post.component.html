@@ -27,7 +27,7 @@
 
 <!--start of second row-->
 <div class="card-columns mt-3">
-  <div class="card" style="width: 22rem!important;" *ngFor="let post of posts">
+  <div class="card" style="width: 13rem!important;" *ngFor="let post of posts">
     <img src="{{post.linktoimage}}" class="card-img-top" alt="...">
     <div class="card-body">
       <div class="card-title">
@@ -40,10 +40,12 @@
         <p class="card-text text-gray">{{post.description}}</p>
       </a>
       <div class="divider mt-4"></div>
-      <div class="mt-3 row">
-        <span class="h6">{{ post.amount | currency:'RWF' }}</span>
-        <div>
-          <div class="btn btn-outline-primary btn-sm m-1">Edit</div>
+      <div class="mt-3">
+        <div class="d-flex justify-content-center">
+          <span class="h6">{{ post.amount | currency:'RWF' }}</span>
+        </div>
+        <div class="d-flex justify-content-center">
+          <div class="btn btn-outline-primary btn-sm m-1" data-target="#editExampleModal" (click)="_getCurrentPost(post)" data-toggle="modal">Edit</div>
           <div class="btn btn-outline-secondary btn-sm m-1" data-target="#putOnSaleModal" data-toggle="modal"
             *ngIf="post.onsale != 1" (click)="_getCurrentPost(post)">Sale</div>
           <div class="btn btn-outline-danger btn-sm m-1" (click)="_delPost(post.id)">Delete</div>
@@ -144,6 +146,70 @@
 
 
 <!--start of modal-->
+<div class="modal fade" id="editExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit a product</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-center">
+          <img src="../../assets/img/edit-product.svg" class="undraws" alt="...">
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Description" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="currentPost.description">
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Link to image" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="currentPost.linktoimage">
+        </div>
+        <div class="input-group mb-3">
+          <input type="number" class="form-control" placeholder="Amount" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="currentPost.amount">
+          <input type="number" class="form-control" placeholder="instock" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="currentPost.instock">
+          <input type="number" class="form-control" placeholder="Rate" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="currentPost.rate">
+          <input type="number" class="form-control" placeholder="Discount" aria-label="Username"
+            aria-describedby="basic-addon1" [(ngModel)]="currentPost.discountexp">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="inputGroupSelect01">Category</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.genderid">
+              <option selected disabled>Gender...</option>
+              <option *ngFor="let gender of genders" value="{{gender.id}}" >{{gender.name}}</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.catid">
+              <option selected disabled>Category...</option>
+              <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="_updPost()" data-dismiss="modal">Edit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end of modal-->
+
+
+<!--start of modal-->
 <div class="modal fade" id="putOnSaleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -162,7 +228,7 @@
             </div>
             <div class="input-group mt-5">
               <input type="number" class="form-control" placeholder="days" aria-label="Username"
-                aria-describedby="basic-addon1" [(ngModel)]="post.linktoimage">
+                aria-describedby="basic-addon1" [(ngModel)]="onSaleDays">
             </div>
           </div>
           <div class="col-md-6 d-flex justify-content-center">
@@ -185,7 +251,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+          (click)="_putOnSale(currentPost.id)">Add</button>
       </div>
     </div>
   </div>

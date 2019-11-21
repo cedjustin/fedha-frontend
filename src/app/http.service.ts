@@ -103,9 +103,25 @@ export class HttpService {
     return this.http.post<any>(this._rootUrl + 'add-post', post);
   }
 
+  // update post
+  _updPost(post: object) {
+    return this.http.put<any>(this._rootUrl + 'upd-post', post);
+  }
+
+
   // del a new post
   _delPost(postid: number) {
     return this.http.delete<any>(this._rootUrl + 'del-post/' + postid);
+  }
+
+  // put a post on sale
+  _putPostOnSale(data: object) {
+    return this.http.put<any>(this._rootUrl + 'upd-put-on-sale', data);
+  }
+
+  // remove a post on sale
+  _putPostFromSale(data: object) {
+    return this.http.put<any>(this._rootUrl + 'upd-rm-on-sale', data);
   }
 
 }
