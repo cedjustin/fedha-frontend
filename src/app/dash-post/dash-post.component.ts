@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import Sweetalert from 'angular-sweetalert';
 
 @Component({
   selector: 'app-dash-post',
@@ -16,7 +17,7 @@ export class DashPostComponent implements OnInit {
   order = 'DESC';
   sortBy = 'datecreated';
   posts: any;
-  post: object = {
+  post: any = {
     description: null,
     linktoimage: null,
     amount: null,
@@ -43,6 +44,22 @@ export class DashPostComponent implements OnInit {
     linktoimage: null,
   };
   onSaleDays: number = null;
+  noPosts = false;
+  emptyFields = {
+    error: false,
+    message: null
+  };
+  allcolors: any;
+  colors: any = [
+    {
+      id: null,
+      pictures: [
+        {
+          linktoimage: null
+        }
+      ]
+    }
+  ];
 
 
 
@@ -84,11 +101,17 @@ export class DashPostComponent implements OnInit {
           localStorage.removeItem('token');
           localStorage.removeItem('userinfo');
           this.router.navigate(['/admin']);
+        } else if (res.response.error === 1 && res.response.message === 'you have no posts') {
+          this.loadingProducts = 0;
+          this.noPosts = true;
         } else {
           this.posts = res.response.data;
           this.posts.forEach(post => {
             post.rate = JSON.parse(post.rate);
+            const parsedImageLink = JSON.parse(post.linktoimage);
+            post.newImageLink = parsedImageLink.colors[0].pictures[0].linktoimage;
           });
+          console.log(res.response.data);
           this._checkIfSaleExp();
           this.loadingProducts = 0;
         }
@@ -161,6 +184,31 @@ export class DashPostComponent implements OnInit {
     );
   }
 
+  // a function to get genders
+  _getColors() {
+    this.loadingProducts = 1;
+    this.http._getColors().subscribe(
+      res => {
+        if (res.response.error === 1 && res.response.message === 'you have no colors in db') {
+          this.loadingProducts = 0;
+          this.router.navigate(['/admin/dashboard/gender']);
+        } else {
+          this.loadingProducts = 0;
+          this.allcolors = res.response.data;
+          console.log(this.colors);
+        }
+      },
+      err => {
+        this.loadingProducts = 0;
+        this.connection = {
+          error: 1,
+          message: 'Connection problem, check your internet and refresh the page'
+        };
+        console.log(err);
+      }
+    );
+  }
+
   // a function to get categories
   _getCategory() {
     this.loadingProducts = 1;
@@ -185,20 +233,60 @@ export class DashPostComponent implements OnInit {
     );
   }
 
+  // a function to check images by colors
+  _imageColorFieldChecker() {
+    let response: any;
+    this.colors.forEach(color => {
+      if (color.id === null) {
+        response = true;
+      } else {
+        color.pictures.forEach(picture => {
+          if (picture.linktoimage === null) {
+            response = true;
+          } else {
+            response = false;
+          }
+        });
+      }
+    });
+    return response;
+  }
+
   // a function to add a post
   _addPost() {
-    this.http._addPost(this.post).subscribe(
-      res => {
-        if (res.response.error === 0) {
-          this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
-        } else {
-          console.log(res.response);
+    if (this.post.amount === null || this.post.description === null || this.post.categoryid === null) {
+      this.emptyFields = {
+        error: true,
+        message: 'please fill all fields before you add a product'
+      };
+    } else if (this.post.discount === null || this.post.instock === null || this.post.rate === null) {
+      this.emptyFields = {
+        error: true,
+        message: 'please fill all fields before you add a product'
+      };
+    } else if (this._imageColorFieldChecker()) {
+      this.emptyFields = {
+        error: true,
+        message: 'please fill all color and picture field or remove unnecessary fields'
+      };
+    } else {
+      this.post.linktoimage = this.colors;
+      this.emptyFields = {
+        error: false,
+        message: ''
+      };
+      this.http._addPost(this.post).subscribe(
+        res => {
+          if (res.response.error === 0) {
+            this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
+          } else {
+            console.log(res.response);
+          }
+        },
+        err => {
         }
-      },
-      err => {
-
-      }
-    );
+      );
+    }
   }
 
 
@@ -252,12 +340,16 @@ export class DashPostComponent implements OnInit {
     }
   }
 
-  // // get time remaining from end of sale
-  // _getMoment(time: any) {
-  //   const start = moment().format();
-  //   const end = moment(JSON.parse(time));
-  //   return end.from(start);
-  // }
+  // a function to get discount
+  _discountedPrice(post: any) {
+    const oldPrice = post.amount;
+    const percentage = post.discountexp;
+    let response;
+    let newPrice: number;
+    newPrice = (oldPrice * percentage) / 100;
+    response = oldPrice - newPrice;
+    return response;
+  }
 
   // a function to check and reshape data if its not still on sale
   _checkIfSaleExp() {
@@ -276,7 +368,7 @@ export class DashPostComponent implements OnInit {
 
   // a function to make expired sale not onsale
   _removeFromSale(post: object) {
-    let data: object = {
+    const data: object = {
       postid: null
     };
     // @ts-ignore
@@ -295,12 +387,47 @@ export class DashPostComponent implements OnInit {
   _updPost() {
     this.http._updPost(this.currentPost).subscribe(
       res => {
-        console.log(res);
+        this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
       },
       err => {
         console.log(err);
       }
     );
+  }
+
+  // add a color field
+  _addColor() {
+    this.colors.push({
+      id: null,
+      pictures: [
+        {
+          linktoimage: null
+        }
+      ]
+    });
+  }
+
+  // remove a color field
+  _removeColor(i: number) {
+    if (this.colors.length === 1 && i === 0) { } else {
+      this.colors.splice(i, 1);
+    }
+  }
+
+  // add a picture field
+  _addPicture(i: number) {
+    this.colors[i].pictures.push(
+      {
+        linktoimage: null
+      }
+    );
+  }
+
+  // remove a picture field
+  _removePicture(i: number, p: number) {
+    if (this.colors[i].pictures.length === 1 && p === 0) { } else {
+      this.colors[i].pictures.splice(p, 1);
+    }
   }
 
 
@@ -309,6 +436,7 @@ export class DashPostComponent implements OnInit {
     this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
     this._getGender();
     this._getCategory();
+    this._getColors();
   }
 
 }

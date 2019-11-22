@@ -29,12 +29,12 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/onsale')?'active':''" (click)="_changeRoute(route='/admin/dashboard/onsale')">
               <i class="fas fa-fire"></i> On-sale
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/ondiscount')?'active':''" (click)="_changeRoute(route='/admin/dashboard/ondiscount')">
               <i class="fas fa-arrow-down"></i> Discounted
             </a>
           </li>

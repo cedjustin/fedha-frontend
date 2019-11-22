@@ -18,6 +18,8 @@ import { TokenInterceptorService } from './token-interceptor.service';
 import { DashPostComponent } from './dash-post/dash-post.component';
 import { RatingModule } from 'ng-starrating';
 import { GenderComponent } from './gender/gender.component';
+import { OnSaleComponent } from './on-sale/on-sale.component';
+import { OnDiscountComponent } from './on-discount/on-discount.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { GenderComponent } from './gender/gender.component';
     AdminComponent,
     DashboardComponent,
     DashPostComponent,
-    GenderComponent
+    GenderComponent,
+    OnSaleComponent,
+    OnDiscountComponent
   ],
   imports: [
     BrowserModule,

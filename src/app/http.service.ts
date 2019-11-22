@@ -56,6 +56,30 @@ export class HttpService {
     return this.http.get<any>(this._rootUrl + 'get-posts', httpOptions);
   }
 
+  // get all posts on sale
+  _getAllPostsOnSale(sortby: any, offset: any, order: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        sortby,
+        offset,
+        order
+      })
+    };
+    return this.http.get<any>(this._rootUrl + 'get-posts-on-sale', httpOptions);
+  }
+
+  // get all posts on discount
+  _getAllPostsOnDiscount(sortby: any, offset: any, order: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        sortby,
+        offset,
+        order
+      })
+    };
+    return this.http.get<any>(this._rootUrl + 'get-posts-on-discount', httpOptions);
+  }
+
   // category and gender
 
   // add gender
@@ -76,6 +100,11 @@ export class HttpService {
   // get category
   _getCategory() {
     return this.http.get<any>(this._rootUrl + 'get-category');
+  }
+
+  // get colors
+  _getColors() {
+    return this.http.get<any>(this._rootUrl + 'get-colors');
   }
 
   // delete gender

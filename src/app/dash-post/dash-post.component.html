@@ -4,6 +4,18 @@
   </div>
 </ng-template>
 
+<ng-template [ngIf]="noPosts">
+  <div class="alert alert-success" role="alert">
+    You dont have any products
+  </div>
+</ng-template>
+
+<ng-template [ngIf]="emptyFields.error">
+  <div class="alert alert-danger" role="alert">
+    {{emptyFields.message}}
+  </div>
+</ng-template>
+
 <!--alert to show that the connection is down-->
 <ng-template [ngIf]="connection.error == 1">
   <div class="alert alert-warning fade show" role="alert">
@@ -28,7 +40,7 @@
 <!--start of second row-->
 <div class="card-columns mt-3">
   <div class="card" style="width: 13rem!important;" *ngFor="let post of posts">
-    <img src="{{post.linktoimage}}" class="card-img-top" alt="...">
+    <img src="{{post.newImageLink}}" class="card-img-top" alt="...">
     <div class="card-body">
       <div class="card-title">
         <span>In stock:</span><span> {{post.instock}}</span><span *ngIf="post.onsale == 1">/</span><strong
@@ -36,16 +48,21 @@
       </div>
       <star-rating value="{{post.rate}}" checkedcolor="#AF996B" uncheckedcolor="gray" size="24px" readonly="false"
         (rate)="onRate($event)"></star-rating>
-      <a href="#" class="text-decoration-none">
+      <a class="text-decoration-none">
         <p class="card-text text-gray">{{post.description}}</p>
       </a>
       <div class="divider mt-4"></div>
       <div class="mt-3">
         <div class="d-flex justify-content-center">
-          <span class="h6">{{ post.amount | currency:'RWF' }}</span>
+          <span class="h6 text-small" [ngClass]="post.amount != _discountedPrice(post)?'linethrough':''">
+            {{ post.amount | currency:'RWF' }}
+          </span>
+          <span class="h6 text-small" *ngIf="post.amount != _discountedPrice(post)">
+            {{_discountedPrice(post) | currency:'RWF'}}</span>
         </div>
         <div class="d-flex justify-content-center">
-          <div class="btn btn-outline-primary btn-sm m-1" data-target="#editExampleModal" (click)="_getCurrentPost(post)" data-toggle="modal">Edit</div>
+          <div class="btn btn-outline-primary btn-sm m-1" data-target="#editExampleModal"
+            (click)="_getCurrentPost(post)" data-toggle="modal">Edit</div>
           <div class="btn btn-outline-secondary btn-sm m-1" data-target="#putOnSaleModal" data-toggle="modal"
             *ngIf="post.onsale != 1" (click)="_getCurrentPost(post)">Sale</div>
           <div class="btn btn-outline-danger btn-sm m-1" (click)="_delPost(post.id)">Delete</div>
@@ -66,14 +83,14 @@
 <nav aria-label="Page navigation example" class="mt-3">
   <ul class="pagination ml-auto">
     <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
+      <a class="page-link" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
     <li class="page-item" *ngFor="let page of pages"><a (click)="_onPageChange(page.id)" class="page-link"
         [ngClass]="(page.id==currentPage)?'bg-dark text-light btn':'bg-light btn'">{{page.id}}</a></li>
     <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
+      <a class="page-link" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
@@ -84,7 +101,7 @@
 <!--start of modal-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Add a product</h5>
@@ -93,45 +110,102 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="d-flex justify-content-center">
-          <img src="../../assets/img/add-product.svg" class="undraws" alt="...">
-        </div>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Description" aria-label="Username"
-            aria-describedby="basic-addon1" [(ngModel)]="post.description">
-        </div>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Link to image" aria-label="Username"
-            aria-describedby="basic-addon1" [(ngModel)]="post.linktoimage">
-        </div>
-        <div class="input-group mb-3">
-          <input type="number" class="form-control" placeholder="Amount" aria-label="Username"
-            aria-describedby="basic-addon1" [(ngModel)]="post.amount">
-          <input type="number" class="form-control" placeholder="instock" aria-label="Username"
-            aria-describedby="basic-addon1" [(ngModel)]="post.instock">
-          <input type="number" class="form-control" placeholder="Rate" aria-label="Username"
-            aria-describedby="basic-addon1" [(ngModel)]="post.rate">
-          <input type="number" class="form-control" placeholder="Discount" aria-label="Username"
-            aria-describedby="basic-addon1" [(ngModel)]="post.discount">
-        </div>
-        <div class="input-group mb-3">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <label class="input-group-text" for="inputGroupSelect01">Category</label>
-            </div>
-            <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="post.genderid">
-              <option selected disabled>Gender...</option>
-              <option *ngFor="let gender of genders" value="{{gender.id}}">{{gender.name}}</option>
-            </select>
+        <div class="container-fluid">
+          <div class="d-flex justify-content-center">
+            <img src="../../assets/img/add-product.svg" class="undraws" alt="...">
           </div>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Description" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="post.description">
+              </div>
+              <div class="input-group mb-3">
+                <input type="number" class="form-control" placeholder="Amount" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="post.amount">
+                <input type="number" class="form-control" placeholder="instock" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="post.instock">
+                <input type="number" class="form-control" placeholder="Rate" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="post.rate">
+                <input type="number" class="form-control" placeholder="Discount" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="post.discount">
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Category</label>
+                  </div>
+                  <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="post.genderid">
+                    <option selected disabled>Gender...</option>
+                    <option *ngFor="let gender of genders" value="{{gender.id}}">{{gender.name}}</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+                  </div>
+                  <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="post.categoryid">
+                    <option selected disabled>Category...</option>
+                    <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="post.categoryid">
-              <option selected disabled>Category...</option>
-              <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
-            </select>
+            <div class="col-md-6 col-sm-6">
+              <div class="row mt-2" *ngFor="let color of colors; let i = index">
+                <div class="col-md-8 border-right">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text" for="inputGroupSelect01">Color</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="color.id">
+                          <option selected disabled>Category...</option>
+                          <option  *ngFor="let dbcolor of allcolors" value="{{dbcolor.id}}">{{dbcolor.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" *ngFor="let picture of color.pictures; let p = index">
+                    <div class="col-md-8">
+                      <div class="input-group mt-3 mb-1">
+                        <input type="text" class="form-control" placeholder="Link to image" aria-label="Username"
+                          aria-describedby="basic-addon1" [(ngModel)]="picture.linktoimage">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="row">
+                        <div class="col-6 d-flex justify-content-center align-items-center">
+                          <button class="btn btn-outline-primary rounded-button mr-2" (click)="_addPicture(i)">
+                            <i class="fa fa-plus text-dark"></i>
+                          </button>
+                        </div>
+                        <div class="col-6 d-flex justify-content-center align-items-center">
+                          <button class="btn btn-outline-danger rounded-button mr-2" (click)="_removePicture(i,p)">
+                            <i class="fa fa-minus text-dark"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-center align-items-center">
+                  <div class="row">
+                    <div class="col-6">
+                      <button class="btn rounded-button btn-outline-primary" (click)="_addColor()">
+                        <i class="fa fa-plus text-dark"></i>
+                      </button>
+                    </div>
+                    <div class="col-6">
+                      <button class="btn rounded-button btn-outline-danger" (click)="_removeColor(i)">
+                        <i class="fa fa-minus text-dark"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -185,7 +259,7 @@
             </div>
             <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.genderid">
               <option selected disabled>Gender...</option>
-              <option *ngFor="let gender of genders" value="{{gender.id}}" >{{gender.name}}</option>
+              <option *ngFor="let gender of genders" value="{{gender.id}}">{{gender.name}}</option>
             </select>
           </div>
           <div class="input-group">
@@ -237,11 +311,18 @@
               <div class="card-body">
                 <div class="card-title">
                   <span>In stock:</span><span> {{currentPost.instock}}</span>
-                  <span class="h6"> {{ currentPost.amount | currency:'RWF' }}</span>
+                  <div class="d-flex justify-content-center">
+                    <span class="h6 text-small"
+                      [ngClass]="currentPost.amount != _discountedPrice(post)?'linethrough':''">
+                      {{ post.amount | currency:'RWF' }}
+                    </span>
+                    <span class="h6 text-small" *ngIf="currentPost.amount != _discountedPrice(post)">
+                      {{_discountedPrice(post) | currency:'RWF'}}</span>
+                  </div>
                 </div>
                 <star-rating value="{{currentPost.rate}}" checkedcolor="#AF996B" uncheckedcolor="gray" size="24px"
                   readonly="false" (rate)="onRate($event)"></star-rating>
-                <a href="#" class="text-decoration-none">
+                <a class="text-decoration-none">
                   <p class="card-text text-gray">{{currentPost.description}}</p>
                 </a>
               </div>

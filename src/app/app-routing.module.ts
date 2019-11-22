@@ -8,6 +8,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth.guard';
 import { DashPostComponent } from './dash-post/dash-post.component';
 import { GenderComponent } from './gender/gender.component';
+import { OnSaleComponent } from './on-sale/on-sale.component';
+import { OnDiscountComponent } from './on-discount/on-discount.component';
 
 
 const routes: Routes = [
@@ -29,6 +31,8 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         children: [
           { path: '', component: DashPostComponent },
+          { path: 'onsale', component: OnSaleComponent },
+          { path: 'ondiscount', component: OnDiscountComponent },
           { path: 'gender', component: GenderComponent },
         ]
       }
