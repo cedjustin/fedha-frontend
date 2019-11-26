@@ -1,85 +1,38 @@
-<div class="choco-body">
-  <div class="white-body">
-    <!-- first header-->
-    <div class="b-border-small hide">
-      <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light">
-          <div class="navbar-brand" href="#">
-            <i class="fas fa-phone-alt header-icon"></i>
-            <span class="text-gray text-small-light "> Call us:</span><strong class="text-small-light">
-              {{phoneNumber}}</strong>
-          </div>
-          <div class="navbar-brand ml-auto" href="#">
-            <i class="far fa-envelope header-icon"></i>
-            <span class="text-gray text-small-light "> Email us:</span><strong class="text-small-light">
-              {{emailAddress}}</strong>
-          </div>
-        </nav>
-      </div>
-    </div>
-    <!--end of first header-->
+<div class="body" (scroll)="onWindowScroll($event);">
+  <!--start of the header-->
+  <div class="z-index-1 animated fadeInDown" id="navbar">
+    <nav class="navbar navbar-expand-lg navbar-light container">
+      <a class="navbar-brand">FEDHA</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <!--start of second header-->
-    <div class="container mt-4">
-      <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand mb-0 h1" href="#">{{nameBrand}}</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link h6" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle h6" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                Shop
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Product Category</a>
-                <a class="dropdown-item" href="#">Top Rated Products</a>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link h6" href="#">Blog</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link h6" href="#">About Us</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link h6" href="#">Contact Us</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </div>
-    <!--end of second header-->
-
-    <!--start of body-->
-    <!--end of body-->
-    <router-outlet></router-outlet>
-    <!--start of footer-->
-    <div>
-      <div class="">
-        <nav class="navbar navbar-expand-lg navbar-light space-around">
-          <div class="mb-5">
-            <a href="#"><i class="fab fa-facebook-f footer-icon"></i></a>
-            <a href="#"><i class="fab fa-instagram footer-icon"></i></a>
-            <a href="#"><i class="fab fa-twitter footer-icon"></i></a>
-          </div>
-          <div class="mb-5">
-            Copyright © {{year}} {{title}}, All Rights Reserved.
-          </div>
-          <div class="navbar-brand mb-5" href="#">
-            <i class="fas fa-phone-alt footer-icon"></i>
-            <span class="text-gray text-small-light "> Call us:</span><strong class="text-small-light">
-              {{phoneNumber}}</strong>
-          </div>
-        </nav>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link text-hover-accent" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-hover-accent" href="#">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-hover-accent" href="#">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-hover-accent" href="#">About us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-hover-accent" href="#">Contact us</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <i class="fas fa-search text-hover-accent m-2"></i>
+          <i class="fas fa-heart text-hover-accent m-2"></i>
+        </form>
       </div>
-    </div>
-    <!--end of footer-->
+    </nav>
   </div>
+  <!--end of the header-->
+  <router-outlet></router-outlet>
 </div>
