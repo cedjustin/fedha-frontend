@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class HttpService {
 
   // tslint:disable-next-line: variable-name
-  private _rootUrl = 'https://fedha.herokuapp.com/api/';
+  private _rootUrl = 'http://localhost:3000/api/';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -87,6 +87,11 @@ export class HttpService {
     return this.http.post<any>(this._rootUrl + 'add-gender', gender);
   }
 
+  // add color
+  _addColor(color: object) {
+    return this.http.post<any>(this._rootUrl + 'add-color', color);
+  }
+
   // add category
   _addCategory(category: object) {
     return this.http.post<any>(this._rootUrl + 'add-category', category);
@@ -125,6 +130,11 @@ export class HttpService {
   // update category
   _updCategory(category: object) {
     return this.http.put<any>(this._rootUrl + 'upd-category', category);
+  }
+
+  // update color
+  _updColor(color: object) {
+    return this.http.put<any>(this._rootUrl + 'upd-color', color);
   }
 
   // add a new post

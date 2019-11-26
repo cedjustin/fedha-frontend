@@ -34,13 +34,13 @@ export class OnDiscountComponent implements OnInit {
   };
   categories: any;
   genders: any;
-  currentPost: object = {
+  currentPost: any = {
     id: null,
     description: null,
     instock: null,
     amount: null,
     rate: null,
-    linktoimage: null,
+    linktoimage: [{ pictures: [{ linktoimage: null }] }],
   };
   onSaleDays: number = null;
   noPosts = false;
@@ -82,7 +82,7 @@ export class OnDiscountComponent implements OnInit {
           localStorage.removeItem('token');
           localStorage.removeItem('userinfo');
           this.router.navigate(['/admin']);
-        } else if (res.response.error === 1 && res.response.message === 'you have no posts on sale') {
+        } else if (res.response.error === 1 && res.response.message === 'you have no posts on discount') {
           this.loadingProducts = 0;
           this.noPosts = true;
           this.posts = [];
@@ -90,6 +90,7 @@ export class OnDiscountComponent implements OnInit {
           this.posts = res.response.data;
           this.posts.forEach(post => {
             post.rate = JSON.parse(post.rate);
+            post.linktoimage = JSON.parse(post.linktoimage);
           });
           this._checkIfSaleExp();
           this.loadingProducts = 0;

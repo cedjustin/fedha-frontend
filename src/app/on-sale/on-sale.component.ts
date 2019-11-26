@@ -40,7 +40,7 @@ export class OnSaleComponent implements OnInit {
     instock: null,
     amount: null,
     rate: null,
-    linktoimage: null,
+    linktoimage: [{ pictures: [{ linktoimage: null }] }],
   };
   onSaleDays: number = null;
   noPosts = false;
@@ -93,6 +93,7 @@ export class OnSaleComponent implements OnInit {
           this.posts = res.response.data;
           this.posts.forEach(post => {
             post.rate = JSON.parse(post.rate);
+            post.linktoimage = JSON.parse(post.linktoimage);
           });
           this._checkIfSaleExp();
           this.loadingProducts = 0;

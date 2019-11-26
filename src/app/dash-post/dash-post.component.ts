@@ -35,13 +35,13 @@ export class DashPostComponent implements OnInit {
   };
   categories: any;
   genders: any;
-  currentPost: object = {
+  currentPost: any = {
     id: null,
     description: null,
     instock: null,
     amount: null,
     rate: null,
-    linktoimage: null,
+    linktoimage: [{ pictures: [{ linktoimage: null }] }],
   };
   onSaleDays: number = null;
   noPosts = false;
@@ -52,7 +52,7 @@ export class DashPostComponent implements OnInit {
   allcolors: any;
   colors: any = [
     {
-      id: null,
+      colorid: null,
       pictures: [
         {
           linktoimage: null
@@ -106,12 +106,17 @@ export class DashPostComponent implements OnInit {
           this.noPosts = true;
         } else {
           this.posts = res.response.data;
+          // restructuring the posts array
           this.posts.forEach(post => {
             post.rate = JSON.parse(post.rate);
-            const parsedImageLink = JSON.parse(post.linktoimage);
-            post.newImageLink = parsedImageLink.colors[0].pictures[0].linktoimage;
+            post.linktoimage = JSON.parse(post.linktoimage);
+            // getting colorinfo
+            post.linktoimage.forEach(element => {
+              element.colorinfo = this.allcolors.find(color => {
+                return color.id == JSON.parse(element.colorid);
+              });
+            });
           });
-          console.log(res.response.data);
           this._checkIfSaleExp();
           this.loadingProducts = 0;
         }
@@ -184,7 +189,7 @@ export class DashPostComponent implements OnInit {
     );
   }
 
-  // a function to get genders
+  // a function to get colors
   _getColors() {
     this.loadingProducts = 1;
     this.http._getColors().subscribe(
@@ -195,7 +200,6 @@ export class DashPostComponent implements OnInit {
         } else {
           this.loadingProducts = 0;
           this.allcolors = res.response.data;
-          console.log(this.colors);
         }
       },
       err => {
@@ -295,6 +299,7 @@ export class DashPostComponent implements OnInit {
     this.http._delPost(postid).subscribe(
       res => {
         if (res.response.error === 0) {
+          this._getPages();
           this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
         } else {
 
@@ -375,7 +380,7 @@ export class DashPostComponent implements OnInit {
     data.postid = post.id;
     this.http._putPostFromSale(data).subscribe(
       res => {
-        console.log(res);
+        // console.log(res);
       },
       err => {
         console.log(err);
@@ -398,7 +403,7 @@ export class DashPostComponent implements OnInit {
   // add a color field
   _addColor() {
     this.colors.push({
-      id: null,
+      colorid: null,
       pictures: [
         {
           linktoimage: null
@@ -430,13 +435,58 @@ export class DashPostComponent implements OnInit {
     }
   }
 
+  // add a color field on edit post model
+  _updAddColor(i: number) {
+    this.currentPost.linktoimage.push({
+      colorid: null,
+      pictures: [
+        {
+          linktoimage: null
+        }
+      ]
+    });
+  }
+
+
+  // remove a color field on edit post modal
+  _updRemoveColor(i: number, p: number) {
+    if (this.currentPost.linktoimage.length === 1 && i === 0) { } else {
+      this.currentPost.linktoimage.splice(i, 1);
+    }
+  }
+
+  // add a picture field on edit post model
+  _updAddPicture(i: number) {
+    this.currentPost.linktoimage[i].pictures.push(
+      {
+        linktoimage: null
+      }
+    );
+  }
+
+
+  // remove a picture field on edit post modal
+  _updRemovePicture(i: number, p: number) {
+    if (this.currentPost.linktoimage[i].pictures.length === 1 && p === 0) { } else {
+      this.currentPost.linktoimage[i].pictures.splice(p, 1);
+    }
+  }
+
+  // change background colorid
+  changeBgColor(color) {
+    const styles = {
+      'background-color': color.colorinfo === undefined ? 'white' : color.colorinfo.colorcode
+    };
+    return styles;
+  }
+
 
   ngOnInit() {
+    this._getColors();
     this._getPages();
-    this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
     this._getGender();
     this._getCategory();
-    this._getColors();
+    this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
   }
 
 }

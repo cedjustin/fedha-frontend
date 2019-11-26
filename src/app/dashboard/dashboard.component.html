@@ -20,27 +20,31 @@
 
 <div class="container-fluid">
   <div class="row navbar-expand-md">
-    <nav class="col-md-3 col-lg-2 bg-light navbar-collapse collapse sidebar" id="sidenav">
+    <nav class="col-md-3 col-lg-2 bg-dark navbar-collapse collapse sidebar" id="sidenav">
       <div class="sidebar-sticky flex-column w-100 mt-1">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard')?'active':''" (click)="_changeRoute(route='/admin/dashboard')">
+            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard')?'active':''"
+              (click)="_changeRoute(route='/admin/dashboard')">
               <i class="fas fa-border-all"></i> Products
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/onsale')?'active':''" (click)="_changeRoute(route='/admin/dashboard/onsale')">
+            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/onsale')?'active':''"
+              (click)="_changeRoute(route='/admin/dashboard/onsale')">
               <i class="fas fa-fire"></i> On-sale
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/ondiscount')?'active':''" (click)="_changeRoute(route='/admin/dashboard/ondiscount')">
+            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/ondiscount')?'active':''"
+              (click)="_changeRoute(route='/admin/dashboard/ondiscount')">
               <i class="fas fa-arrow-down"></i> Discounted
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/gender')?'active nav-link':'nav-link'" (click)="_changeRoute(route='/admin/dashboard/gender')">
-                <i class="fas fa-genderless"></i> Gender/Category
+            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/gender')?'active nav-link':'nav-link'"
+              (click)="_changeRoute(route='/admin/dashboard/gender')">
+              <i class="fas fa-genderless"></i> Gender/Category/Colors
             </a>
           </li>
         </ul>
@@ -54,22 +58,7 @@
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
             <a class="nav-link" href="#">
-              <span data-feather="file-text"></span> Current month
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span> Last quarter
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span> Social engagement
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span> Year-end sale
+              <span data-feather="file-text"></span> Report
             </a>
           </li>
         </ul>

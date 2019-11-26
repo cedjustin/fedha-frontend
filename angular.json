@@ -28,13 +28,37 @@
               "src/assets"
             ],
             "styles": [
+              "src/assets/template/css/main.css",
+              "src/assets/template/css/util.css",
+              "src/assets/template/vendor/animate/animate.css",
+              "src/assets/template/vendor/animsition/css/animsition.css",
+              "src/assets/template/vendor/css-hamburgers/hamburgers.css",
+              "src/assets/template/vendor/daterangepicker/daterangepicker.css",
+              "src/assets/template/vendor/lightbox2/css/lightbox.css",
+              "src/assets/template/vendor/magnificPopup/magnific-popup.css",
+              "src/assets/template/vendor/perfect-scrollbar/perfect-scrollbar.css",
+              "src/assets/template/vendor/select2/select2.css",
+              "src/assets/template/vendor/slick/slick-theme.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/animate.css/animate.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "src/assets/template/vendor/animsition/js/animsition.js",
+              "src/assets/template/vendor/countdowntime/countdowntime.js",
+              "src/assets/template/vendor/daterangepicker/daterangepicker.js",
+              "src/assets/template/vendor/daterangepicker/moment.js",
+              "src/assets/template/vendor/isotope/isotope.pkgd.min.js",
+              "src/assets/template/vendor/lightbox2/js/lightbox.js",
+              "src/assets/template/vendor/MagnificPopup/jquery.magnific-popup.js",
+              "src/assets/template/vendor/parallax100/parallax100.js",
+              "src/assets/template/vendor/perfect-scrollbar/perfect-scrollbar.min.js",
+              "src/assets/template/vendor/select2/select2.js",
+              "src/assets/template/vendor/slick/slick.min.js",
+              "src/assets/template/vendor/sweetalert/sweetalert.min.js"
             ]
           },
           "configurations": {

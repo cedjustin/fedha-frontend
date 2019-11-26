@@ -39,8 +39,8 @@
 
 <!--start of second row-->
 <div class="card-columns mt-3">
-  <div class="card" style="width: 13rem!important;" *ngFor="let post of posts">
-    <img src="{{post.newImageLink}}" class="card-img-top" alt="...">
+  <div class="card animated fadeIn" style="width: 13rem!important;" *ngFor="let post of posts">
+    <img src="{{post.linktoimage[0].pictures[0].linktoimage}}" class="card-img-top" alt="...">
     <div class="card-body">
       <div class="card-title">
         <span>In stock:</span><span> {{post.instock}}</span><span *ngIf="post.onsale == 1">/</span><strong
@@ -49,9 +49,19 @@
       <star-rating value="{{post.rate}}" checkedcolor="#AF996B" uncheckedcolor="gray" size="24px" readonly="false"
         (rate)="onRate($event)"></star-rating>
       <a class="text-decoration-none">
-        <p class="card-text text-gray">{{post.description}}</p>
+        <p class="card-text text-gray text-capitalize">{{post.description}}</p>
       </a>
-      <div class="divider mt-4"></div>
+      <div class="mt-4 d-flex align-items-center">
+        <span *ngFor="let category of categories" class="text-small text-capitalize" [ngClass]="category.id != post.catid?'hide':''">
+          {{category.name}}
+        </span>
+        <span> / </span>
+        <span *ngFor="let gender of genders" class="text-small text-capitalize animated fadeIn delay-1s" [ngClass]="gender.id != post.genderid?'hide':''">
+          {{gender.name}}
+        </span>
+        <span *ngFor="let dbcolor of post.linktoimage" class="dot m-1 animated fadeIn delay-2s" [ngStyle]="changeBgColor(dbcolor)">
+        </span>
+      </div>
       <div class="mt-3">
         <div class="d-flex justify-content-center">
           <span class="h6 text-small" [ngClass]="post.amount != _discountedPrice(post)?'linethrough':''">
@@ -82,18 +92,8 @@
 <!--start of third row-->
 <nav aria-label="Page navigation example" class="mt-3">
   <ul class="pagination ml-auto">
-    <li class="page-item">
-      <a class="page-link" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
     <li class="page-item" *ngFor="let page of pages"><a (click)="_onPageChange(page.id)" class="page-link"
         [ngClass]="(page.id==currentPage)?'bg-dark text-light btn':'bg-light btn'">{{page.id}}</a></li>
-    <li class="page-item">
-      <a class="page-link" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
   </ul>
 </nav>
 <!--end of third row-->
@@ -133,7 +133,7 @@
               <div class="input-group mb-3">
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Category</label>
+                    <label class="input-group-text" for="inputGroupSelect01">Gender</label>
                   </div>
                   <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="post.genderid">
                     <option selected disabled>Gender...</option>
@@ -142,7 +142,7 @@
                 </div>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+                    <label class="input-group-text" for="inputGroupSelect01">Category</label>
                   </div>
                   <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="post.categoryid">
                     <option selected disabled>Category...</option>
@@ -160,9 +160,9 @@
                         <div class="input-group-prepend">
                           <label class="input-group-text" for="inputGroupSelect01">Color</label>
                         </div>
-                        <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="color.id">
+                        <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="color.colorid">
                           <option selected disabled>Category...</option>
-                          <option  *ngFor="let dbcolor of allcolors" value="{{dbcolor.id}}">{{dbcolor.name}}</option>
+                          <option *ngFor="let dbcolor of allcolors" value="{{dbcolor.id}}">{{dbcolor.name}}</option>
                         </select>
                       </div>
                     </div>
@@ -222,7 +222,7 @@
 <!--start of modal-->
 <div class="modal fade" id="editExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Edit a product</h5>
@@ -231,51 +231,117 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="d-flex justify-content-center">
-          <img src="../../assets/img/edit-product.svg" class="undraws" alt="...">
-        </div>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Description" aria-label="Username"
-            aria-describedby="basic-addon1" [(ngModel)]="currentPost.description">
-        </div>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Link to image" aria-label="Username"
-            aria-describedby="basic-addon1" [(ngModel)]="currentPost.linktoimage">
-        </div>
-        <div class="input-group mb-3">
-          <input type="number" class="form-control" placeholder="Amount" aria-label="Username"
-            aria-describedby="basic-addon1" [(ngModel)]="currentPost.amount">
-          <input type="number" class="form-control" placeholder="instock" aria-label="Username"
-            aria-describedby="basic-addon1" [(ngModel)]="currentPost.instock">
-          <input type="number" class="form-control" placeholder="Rate" aria-label="Username"
-            aria-describedby="basic-addon1" [(ngModel)]="currentPost.rate">
-          <input type="number" class="form-control" placeholder="Discount" aria-label="Username"
-            aria-describedby="basic-addon1" [(ngModel)]="currentPost.discountexp">
-        </div>
-        <div class="input-group mb-3">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <label class="input-group-text" for="inputGroupSelect01">Category</label>
-            </div>
-            <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.genderid">
-              <option selected disabled>Gender...</option>
-              <option *ngFor="let gender of genders" value="{{gender.id}}">{{gender.name}}</option>
-            </select>
+        <div class="container-fluid">
+          <div class="d-flex justify-content-center">
+            <img src="../../assets/img/edit-product.svg" class="undraws" alt="...">
           </div>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Description" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="currentPost.description" data-toggle="tooltip"
+                  data-placement="top" title="Description">
+              </div>
+              <div class="input-group mb-3">
+                <input type="number" class="form-control" placeholder="Amount" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="currentPost.amount" data-toggle="tooltip"
+                  data-placement="top" title="Amount">
+                <input type="number" class="form-control" placeholder="instock" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="currentPost.instock" data-toggle="tooltip"
+                  data-placement="top" title="Instock">
+                <input type="number" class="form-control" placeholder="Rate" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="currentPost.rate" data-toggle="tooltip"
+                  data-placement="top" title="Rate">
+                <input type="number" class="form-control" placeholder="Discount" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="currentPost.discountexp" data-toggle="tooltip"
+                  data-placement="top" title="Discount">
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+                  </div>
+                  <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.genderid">
+                    <option *ngFor="let gender of genders" value="{{gender.id}}"
+                      [ngClass]="gender.id == currentPost.genderid?'hide':''">
+                      <span>{{gender.name}}</span>
+                    </option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Category</label>
+                  </div>
+                  <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.catid">
+                    <option *ngFor="let category of categories" value="{{category.id}}"
+                      [ngClass]="category.id == currentPost.catid?'hide':''">
+                      <span>{{category.name}}</span>
+                    </option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.catid">
-              <option selected disabled>Category...</option>
-              <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
-            </select>
+            <div class="col-md-6 col-sm-6">
+              <div class="row mt-2" *ngFor="let color of currentPost.linktoimage; let i = index">
+                <div class="col-md-8 border-right">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text" for="inputGroupSelect01">Color</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="color.colorid">
+                          <option *ngFor="let dbcolor of allcolors" value="{{dbcolor.id}}"
+                            [ngClass]="dbcolor.id == color.colorid?'hide':''">{{dbcolor.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" *ngFor="let picture of color.pictures; let p = index">
+                    <div class="col-md-8">
+                      <div class="input-group mt-3 mb-1">
+                        <input type="text" class="form-control" placeholder="Link to image" aria-label="Username"
+                          aria-describedby="basic-addon1" [(ngModel)]="picture.linktoimage">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="row">
+                        <div class="col-6 d-flex justify-content-center align-items-center">
+                          <button class="btn btn-outline-primary rounded-button mr-2" (click)="_updAddPicture(i)">
+                            <i class="fa fa-plus text-dark"></i>
+                          </button>
+                        </div>
+                        <div class="col-6 d-flex justify-content-center align-items-center">
+                          <button class="btn btn-outline-danger rounded-button mr-2" (click)="_updRemovePicture(i,p)">
+                            <i class="fa fa-minus text-dark"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-center align-items-center">
+                  <div class="row">
+                    <div class="col-6">
+                      <button class="btn rounded-button btn-outline-primary" (click)="_updAddColor()">
+                        <i class="fa fa-plus text-dark"></i>
+                      </button>
+                    </div>
+                    <div class="col-6">
+                      <button class="btn rounded-button btn-outline-danger" (click)="_updRemoveColor(i)">
+                        <i class="fa fa-minus text-dark"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="_updPost()" data-dismiss="modal">Edit</button>
+        <button type="button" class="btn btn-primary" (click)="_updPost()" data-dismiss="modal">Update</button>
       </div>
     </div>
   </div>
@@ -307,7 +373,7 @@
           </div>
           <div class="col-md-6 d-flex justify-content-center">
             <div class="card" style="width: 22rem!important;border:none">
-              <img src="{{currentPost.linktoimage}}" class="card-img-top" alt="...">
+              <img src="{{currentPost.linktoimage[0].pictures[0].linktoimage}}" class="card-img-top" alt="...">
               <div class="card-body">
                 <div class="card-title">
                   <span>In stock:</span><span> {{currentPost.instock}}</span>

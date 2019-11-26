@@ -92,3 +92,18 @@ $accent-color: #AF996B;
   border: solid black 1px;
   border-radius: 21px;
 }
+
+.hide{
+  display: none;
+}
+
+.dot {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.text-capitalize {
+  text-transform: uppercase;
+}

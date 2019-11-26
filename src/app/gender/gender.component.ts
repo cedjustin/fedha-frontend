@@ -16,6 +16,10 @@ export class GenderComponent implements OnInit {
   category = {
     name
   };
+  color = {
+    name: null,
+    code: null
+  };
   loadingData = 1;
   connection: object = {
     error: 0,
@@ -23,11 +27,18 @@ export class GenderComponent implements OnInit {
   };
   genders: any;
   categories: any;
+  colors: any;
   noGender = false;
   noCategory = false;
+  noColors = false;
   currentCategory: object = {
     name,
     id: ''
+  };
+  currentColor: object = {
+    name,
+    id: '',
+    colorcode: ''
   };
   currentGender: object = {
     name,
@@ -116,12 +127,33 @@ export class GenderComponent implements OnInit {
     }
   }
 
+  _addColor() {
+    if (this.color.name === '' || this.color.name === null) {
+      console.log('empty');
+    } else {
+      this.http._addColor(this.color).subscribe(
+        res => {
+          if (res.response.error === 1) {
+
+          } else {
+            this._getColors();
+          }
+        },
+        err => { console.log(err); }
+      );
+    }
+  }
+
   _editCategory(category: object) {
     this.currentCategory = category;
   }
 
   _editGender(gender: object) {
     this.currentGender = gender;
+  }
+
+  _editColor(color: object) {
+    this.currentColor = color;
   }
 
   _delGender() {
@@ -165,6 +197,20 @@ export class GenderComponent implements OnInit {
     );
   }
 
+
+  _updColor() {
+    this.http._updColor(this.currentColor).subscribe(
+      res => {
+        if (res.response.error === 1) {
+          console.log(res.response);
+        } else {
+          this._getColors();
+        }
+      },
+      err => { }
+    );
+  }
+
   _updCategory() {
     this.http._updCategory(this.currentCategory).subscribe(
       res => {
@@ -178,9 +224,48 @@ export class GenderComponent implements OnInit {
     );
   }
 
+  // a function to get colors
+  _getColors() {
+    this.loadingData = 1;
+    this.http._getColors().subscribe(
+      res => {
+        this.loadingData = 0;
+        if (res.response.error === 1 && res.response.message === 'you have no colors in db') {
+        } else {
+          this.loadingData = 0;
+          this.colors = res.response.data;
+        }
+      },
+      err => {
+        this.loadingData = 0;
+        this.connection = {
+          error: 1,
+          message: 'Connection problem, check your internet and refresh the page'
+        };
+        console.log(err);
+      }
+    );
+  }
+
+  // a function to change background color
+  setColor(color) {
+    let styles;
+    if (color === '#fff' || color === '#ffffff') {
+      styles = {
+        color: 'black'
+      };
+    } else {
+      styles = {
+        color
+      };
+    }
+    return styles;
+  }
+
   ngOnInit() {
     this._getGender();
     this._getCategory();
+    this._getColors();
   }
 
 }
