@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener, Inject } from '@angular/core';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { DOCUMENT } from '@angular/common';
+import { HttpService } from '../http.service';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,7 @@ import { DOCUMENT } from '@angular/common';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(@Inject(DOCUMENT) document) { }
+  constructor(@Inject(DOCUMENT) document, private http: HttpService) { }
 
   title = 'Fedha';
   nameBrand = 'FEDHA';
@@ -25,6 +26,9 @@ export class HomeComponent implements OnInit {
   year = this.d.getFullYear();
   phoneNumber = '(+12) 222 3456 888';
   emailAddress = 'example@example.com';
+  posts: any = [];
+  loadingData = false;
+
 
   ngOnInit() {
   }

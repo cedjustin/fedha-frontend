@@ -18,11 +18,11 @@ export class DashPostComponent implements OnInit {
   sortBy = 'datecreated';
   posts: any;
   post: any = {
+    name: null,
     description: null,
     linktoimage: null,
     amount: null,
     instock: null,
-    rate: null,
     discount: null,
     genderid: null,
     categoryid: null
@@ -37,11 +37,17 @@ export class DashPostComponent implements OnInit {
   genders: any;
   currentPost: any = {
     id: null,
+    name: null,
     description: null,
     instock: null,
     amount: null,
-    rate: null,
     linktoimage: [{ pictures: [{ linktoimage: null }] }],
+    sizes: {
+      productType: null,
+      data: [{
+        name
+      }]
+    }
   };
   onSaleDays: number = null;
   noPosts = false;
@@ -60,6 +66,17 @@ export class DashPostComponent implements OnInit {
       ]
     }
   ];
+  shoesSizes: any = [
+    {
+      size: null
+    }
+  ];
+  clothesSizes: any = [
+    {
+      name: null
+    }
+  ];
+  productType: any = 0;
 
 
 
@@ -104,12 +121,15 @@ export class DashPostComponent implements OnInit {
         } else if (res.response.error === 1 && res.response.message === 'you have no posts') {
           this.loadingProducts = 0;
           this.noPosts = true;
+          this.posts = [];
         } else {
+          console.log(res.response.data);
+          this.noPosts = false;
           this.posts = res.response.data;
           // restructuring the posts array
           this.posts.forEach(post => {
-            post.rate = JSON.parse(post.rate);
             post.linktoimage = JSON.parse(post.linktoimage);
+            post.sizes = JSON.parse(post.sizes);
             // getting colorinfo
             post.linktoimage.forEach(element => {
               element.colorinfo = this.allcolors.find(color => {
@@ -263,7 +283,7 @@ export class DashPostComponent implements OnInit {
         error: true,
         message: 'please fill all fields before you add a product'
       };
-    } else if (this.post.discount === null || this.post.instock === null || this.post.rate === null) {
+    } else if (this.post.discount === null || this.post.instock === null || this.post.name === null || this.productType === 0) {
       this.emptyFields = {
         error: true,
         message: 'please fill all fields before you add a product'
@@ -275,6 +295,10 @@ export class DashPostComponent implements OnInit {
       };
     } else {
       this.post.linktoimage = this.colors;
+      this.post.sizes = {
+        productType: this.productType,
+        data: this.productType === '1' ? this.shoesSizes : this.clothesSizes
+      };
       this.emptyFields = {
         error: false,
         message: ''
@@ -419,6 +443,34 @@ export class DashPostComponent implements OnInit {
     }
   }
 
+  // add a clothes size field
+  _addClothesSize() {
+    this.clothesSizes.push({
+      name: null
+    });
+  }
+
+  // remove a clothes size field
+  _removeClothesSize(i: number) {
+    if (this.clothesSizes.length === 1 && i === 0) { } else {
+      this.clothesSizes.splice(i, 1);
+    }
+  }
+
+  // add a shoes size field
+  _addShoesSize() {
+    this.shoesSizes.push({
+      size: null
+    });
+  }
+
+  // remove a clothes size field
+  _removeShoesSize(i: number) {
+    if (this.shoesSizes.length === 1 && i === 0) { } else {
+      this.shoesSizes.splice(i, 1);
+    }
+  }
+
   // add a picture field
   _addPicture(i: number) {
     this.colors[i].pictures.push(
@@ -469,6 +521,31 @@ export class DashPostComponent implements OnInit {
   _updRemovePicture(i: number, p: number) {
     if (this.currentPost.linktoimage[i].pictures.length === 1 && p === 0) { } else {
       this.currentPost.linktoimage[i].pictures.splice(p, 1);
+    }
+  }
+
+  // add a size field on edit post model
+  _updAddSize(productType: any) {
+    if (productType == 1) {
+      this.currentPost.sizes.data.push(
+        {
+          size: null
+        }
+      );
+    } else {
+      this.currentPost.sizes.data.push(
+        {
+          name: null
+        }
+      );
+    }
+  }
+
+
+  // remove a size field on edit post modal
+  _updRemoveSize(p: number) {
+    if (this.currentPost.sizes.data.length === 1 && p === 0) { } else {
+      this.currentPost.sizes.data.splice(p, 1);
     }
   }
 

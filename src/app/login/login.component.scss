@@ -1,33 +1,32 @@
-$accent-color: #AF996B;
+$accent-color: rgb(220, 235, 255);
 
-.form-control {
-  margin: 5px
-}
-
-.bg-accent {
-  background-color: $accent-color;
-  border: none
-}
-
-.text-input {
-  width: 300px !important;
-  border: none;
-  background-color: none;
-  border-radius: 25px;
-}
-
-.rounded-button {
-  border-radius: 25px;
-}
-
-.main-container {
-  width: 100%;
+.full-screen {
   min-height: 100vh;
 }
 
 .w-100 {
-  width: 110%;
-  height: 100%;
+  width: 40rem !important;
+}
+
+.text-input {
+  width: 95%;
+  border: none;
+  border-radius: 5px !important;
+  height: 50px;
+  background-color: none!important;
+}
+
+.text-input-container{
+  width: 100%!important;
+}
+
+.row-part{
+  background-color: rgba(247, 247, 247, 0.705);
+  border-radius: 10px;
+}
+
+.col-8{
+  min-height: 100vh;
 }
 
 @media screen and (max-width: 414px) {

@@ -43,23 +43,31 @@
     <img src="{{post.linktoimage[0].pictures[0].linktoimage}}" class="card-img-top" alt="...">
     <div class="card-body">
       <div class="card-title">
+        <div>
+          <p class="h6">{{post.name}}</p>
+          <p class="mt-1 text-truncate">{{post.description}}</p>
+        </div>
         <span>In stock:</span><span> {{post.instock}}</span><span *ngIf="post.onsale == 1">/</span><strong
           class="text-danger" *ngIf="post.onsale == 1"> on sale</strong>
       </div>
-      <star-rating value="{{post.rate}}" checkedcolor="#AF996B" uncheckedcolor="gray" size="24px" readonly="false"
-        (rate)="onRate($event)"></star-rating>
-      <a class="text-decoration-none">
-        <p class="card-text text-gray text-capitalize">{{post.description}}</p>
-      </a>
+      <ng-template [ngIf]="post.sizes.productType == 1">
+        <span>size: </span> <span *ngFor="let sSize of post.sizes.data"> {{sSize.size}}</span>
+      </ng-template>
+      <ng-template [ngIf]="post.sizes.productType == 2">
+        <span>size: </span> <span *ngFor="let cSize of post.sizes.data"> {{cSize.name}}</span>
+      </ng-template>
       <div class="mt-4 d-flex align-items-center">
-        <span *ngFor="let category of categories" class="text-small text-capitalize" [ngClass]="category.id != post.catid?'hide':''">
+        <span *ngFor="let category of categories" class="text-small text-capitalize"
+          [ngClass]="category.id != post.catid?'hide':''">
           {{category.name}}
         </span>
         <span> / </span>
-        <span *ngFor="let gender of genders" class="text-small text-capitalize animated fadeIn delay-1s" [ngClass]="gender.id != post.genderid?'hide':''">
+        <span *ngFor="let gender of genders" class="text-small text-capitalize animated fadeIn delay-1s"
+          [ngClass]="gender.id != post.genderid?'hide':''">
           {{gender.name}}
         </span>
-        <span *ngFor="let dbcolor of post.linktoimage" class="dot m-1 animated fadeIn delay-2s" [ngStyle]="changeBgColor(dbcolor)">
+        <span *ngFor="let dbcolor of post.linktoimage" class="dot m-1 animated fadeIn delay-2s"
+          [ngStyle]="changeBgColor(dbcolor)">
         </span>
       </div>
       <div class="mt-3">
@@ -101,7 +109,7 @@
 <!--start of modal-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Add a product</h5>
@@ -114,22 +122,26 @@
           <div class="d-flex justify-content-center">
             <img src="../../assets/img/add-product.svg" class="undraws" alt="...">
           </div>
-          <div class="row">
+          <div class="row mt-2">
             <div class="col-md-6 col-sm-6">
               <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Description" aria-label="Username"
-                  aria-describedby="basic-addon1" [(ngModel)]="post.description">
+                <input type="text" class="form-control" placeholder="Name" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="post.name">
+              </div>
+              <div class="input-group mb-3">
+                <textarea class="form-control" placeholder="Description" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="post.description"></textarea>
               </div>
               <div class="input-group mb-3">
                 <input type="number" class="form-control" placeholder="Amount" aria-label="Username"
                   aria-describedby="basic-addon1" [(ngModel)]="post.amount">
                 <input type="number" class="form-control" placeholder="instock" aria-label="Username"
                   aria-describedby="basic-addon1" [(ngModel)]="post.instock">
-                <input type="number" class="form-control" placeholder="Rate" aria-label="Username"
-                  aria-describedby="basic-addon1" [(ngModel)]="post.rate">
                 <input type="number" class="form-control" placeholder="Discount" aria-label="Username"
                   aria-describedby="basic-addon1" [(ngModel)]="post.discount">
               </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
               <div class="input-group mb-3">
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
@@ -140,7 +152,7 @@
                     <option *ngFor="let gender of genders" value="{{gender.id}}">{{gender.name}}</option>
                   </select>
                 </div>
-                <div class="input-group">
+                <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01">Category</label>
                   </div>
@@ -151,7 +163,81 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 col-sm-6">
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Type</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="productType">
+                  <option selected disabled>Product type...</option>
+                  <option value="1">Shoes</option>
+                  <option value="2">Clothes</option>
+                </select>
+              </div>
+              <ng-template [ngIf]="productType == 0" [ngIfElse]="showSizes"></ng-template>
+              <ng-template #showSizes>
+                <ng-template [ngIf]="productType == 1">
+                  <div *ngFor="let shoesSize of shoesSizes; let i = index" class="row m-3">
+                    <div class="col-8">
+                      <div class="input-group">
+                        <input type="number" class="form-control" placeholder="size" aria-label="Username"
+                          aria-describedby="basic-addon1" [(ngModel)]="shoesSize.size">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="row">
+                        <div class="col-6">
+                          <button class="btn rounded-button btn-outline-primary" (click)="_addShoesSize(i)">
+                            <i class="fa fa-plus text-dark"></i>
+                          </button>
+                        </div>
+                        <div class="col-6">
+                          <button class="btn rounded-button btn-outline-danger" (click)="_removeShoesSize(i)">
+                            <i class="fa fa-minus text-dark"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template [ngIf]="productType == 2">
+                  <div *ngFor="let clothesSize of clothesSizes; let i = index" class="row m-3">
+                    <div class="col-8">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text" for="inputGroupSelect01">Sizes</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="clothesSize.name">
+                          <option selected disabled>clothes size...</option>
+                          <option value="SM">SM</option>
+                          <option value="M">M</option>
+                          <option value="L">L</option>
+                          <option value="XL">XL</option>
+                          <option value="XXL">XXL</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="row">
+                        <div class="col-6">
+                          <button class="btn rounded-button btn-outline-primary" (click)="_addClothesSize(i)">
+                            <i class="fa fa-plus text-dark"></i>
+                          </button>
+                        </div>
+                        <div class="col-6">
+                          <button class="btn rounded-button btn-outline-danger" (click)="_removeClothesSize(i)">
+                            <i class="fa fa-minus text-dark"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-template>
+            </div>
+            <div class="col-6">
               <div class="row mt-2" *ngFor="let color of colors; let i = index">
                 <div class="col-md-8 border-right">
                   <div class="row">
@@ -222,7 +308,7 @@
 <!--start of modal-->
 <div class="modal fade" id="editExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Edit a product</h5>
@@ -235,12 +321,16 @@
           <div class="d-flex justify-content-center">
             <img src="../../assets/img/edit-product.svg" class="undraws" alt="...">
           </div>
-          <div class="row">
+          <div class="row mt-2">
             <div class="col-md-6 col-sm-6">
               <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Description" aria-label="Username"
+                <input type="text" class="form-control" placeholder="name" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="currentPost.name" data-toggle="tooltip"
+                  data-placement="top" title="name" data-toggle="tooltip" data-placement="top" title="name">
+                <textarea class="form-control" placeholder="Description" aria-label="Username"
                   aria-describedby="basic-addon1" [(ngModel)]="currentPost.description" data-toggle="tooltip"
                   data-placement="top" title="Description">
+                </textarea>
               </div>
               <div class="input-group mb-3">
                 <input type="number" class="form-control" placeholder="Amount" aria-label="Username"
@@ -249,39 +339,100 @@
                 <input type="number" class="form-control" placeholder="instock" aria-label="Username"
                   aria-describedby="basic-addon1" [(ngModel)]="currentPost.instock" data-toggle="tooltip"
                   data-placement="top" title="Instock">
-                <input type="number" class="form-control" placeholder="Rate" aria-label="Username"
-                  aria-describedby="basic-addon1" [(ngModel)]="currentPost.rate" data-toggle="tooltip"
-                  data-placement="top" title="Rate">
                 <input type="number" class="form-control" placeholder="Discount" aria-label="Username"
                   aria-describedby="basic-addon1" [(ngModel)]="currentPost.discountexp" data-toggle="tooltip"
                   data-placement="top" title="Discount">
               </div>
-              <div class="input-group mb-3">
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Gender</label>
-                  </div>
-                  <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.genderid">
-                    <option *ngFor="let gender of genders" value="{{gender.id}}"
-                      [ngClass]="gender.id == currentPost.genderid?'hide':''">
-                      <span>{{gender.name}}</span>
-                    </option>
-                  </select>
-                </div>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Category</label>
-                  </div>
-                  <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.catid">
-                    <option *ngFor="let category of categories" value="{{category.id}}"
-                      [ngClass]="category.id == currentPost.catid?'hide':''">
-                      <span>{{category.name}}</span>
-                    </option>
-                  </select>
-                </div>
-              </div>
             </div>
             <div class="col-md-6 col-sm-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.genderid">
+                  <option *ngFor="let gender of genders" value="{{gender.id}}"
+                    [ngClass]="gender.id == currentPost.genderid?'hide':''">
+                    <span>{{gender.name}}</span>
+                  </option>
+                </select>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Category</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.catid">
+                  <option *ngFor="let category of categories" value="{{category.id}}"
+                    [ngClass]="category.id == currentPost.catid?'hide':''">
+                    <span>{{category.name}}</span>
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <span class="h4">Sizes:</span><br>
+              <ng-template [ngIf]="currentPost.sizes.productType == 1">
+                <div *ngFor="let currentShoe of currentPost.sizes.data; let s = index" class="row m-3">
+                  <div class="col-8">
+                    <div class="input-group">
+                      <input type="number" class="form-control" placeholder="size" aria-label="Username"
+                        aria-describedby="basic-addon1" [(ngModel)]="currentShoe.size">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="row">
+                      <div class="col-6">
+                        <button class="btn rounded-button btn-outline-primary"
+                          (click)="_updAddSize(currentPost.sizes.productType)">
+                          <i class="fa fa-plus text-dark"></i>
+                        </button>
+                      </div>
+                      <div class="col-6">
+                        <button class="btn rounded-button btn-outline-danger" (click)="_updRemoveSize(s)">
+                          <i class="fa fa-minus text-dark"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template [ngIf]="currentPost.sizes.productType == 2">
+                <div *ngFor="let currentClothe of currentPost.sizes.data; let c = index" class="row m-3">
+                  <div class="col-8">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Sizes</label>
+                      </div>
+                      <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentClothe.name">
+                        <option selected disabled>clothes size...</option>
+                        <option value="SM">SM</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="row">
+                      <div class="col-6">
+                        <button class="btn rounded-button btn-outline-primary"
+                          (click)="_updAddSize(currentPost.sizes.productType)">
+                          <i class="fa fa-plus text-dark"></i>
+                        </button>
+                      </div>
+                      <div class="col-6">
+                        <button class="btn rounded-button btn-outline-danger" (click)="_updRemoveSize(c)">
+                          <i class="fa fa-minus text-dark"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+            <div class="col-6">
               <div class="row mt-2" *ngFor="let color of currentPost.linktoimage; let i = index">
                 <div class="col-md-8 border-right">
                   <div class="row">
@@ -376,21 +527,41 @@
               <img src="{{currentPost.linktoimage[0].pictures[0].linktoimage}}" class="card-img-top" alt="...">
               <div class="card-body">
                 <div class="card-title">
+                  <div>
+                    <p class="h6">{{currentPost.name}}</p>
+                    <p class="mt-1 text-truncate">{{currentPost.description}}</p>
+                  </div>
                   <span>In stock:</span><span> {{currentPost.instock}}</span>
+                </div>
+                <ng-template [ngIf]="currentPost.sizes.productType == 1">
+                  <span>size: </span> <span *ngFor="let sSize of currentPost.sizes.data"> {{sSize.size}}</span>
+                </ng-template>
+                <ng-template [ngIf]="currentPost.sizes.productType == 2">
+                  <span>size: </span> <span *ngFor="let cSize of currentPost.sizes.data"> {{cSize.name}}</span>
+                </ng-template>
+                <div class="mt-4 d-flex align-items-center">
+                  <span *ngFor="let category of categories" class="text-small text-capitalize"
+                    [ngClass]="category.id != currentPost.catid?'hide':''">
+                    {{category.name}}
+                  </span>
+                  <span> / </span>
+                  <span *ngFor="let gender of genders" class="text-small text-capitalize animated fadeIn delay-1s"
+                    [ngClass]="gender.id != currentPost.genderid?'hide':''">
+                    {{gender.name}}
+                  </span>
+                  <span *ngFor="let dbcolor of currentPost.linktoimage" class="dot m-1 animated fadeIn delay-2s"
+                    [ngStyle]="changeBgColor(dbcolor)">
+                  </span>
+                </div>
+                <div class="mt-3">
                   <div class="d-flex justify-content-center">
-                    <span class="h6 text-small"
-                      [ngClass]="currentPost.amount != _discountedPrice(post)?'linethrough':''">
-                      {{ post.amount | currency:'RWF' }}
+                    <span class="h6 text-small" [ngClass]="currentPost.amount != _discountedPrice(currentPost)?'linethrough':''">
+                      {{ currentPost.amount | currency:'RWF' }}
                     </span>
-                    <span class="h6 text-small" *ngIf="currentPost.amount != _discountedPrice(post)">
-                      {{_discountedPrice(post) | currency:'RWF'}}</span>
+                    <span class="h6 text-small" *ngIf="currentPost.amount != _discountedPrice(currentPost)">
+                      {{_discountedPrice(currentPost) | currency:'RWF'}}</span>
                   </div>
                 </div>
-                <star-rating value="{{currentPost.rate}}" checkedcolor="#AF996B" uncheckedcolor="gray" size="24px"
-                  readonly="false" (rate)="onRate($event)"></star-rating>
-                <a class="text-decoration-none">
-                  <p class="card-text text-gray">{{currentPost.description}}</p>
-                </a>
               </div>
             </div>
           </div>

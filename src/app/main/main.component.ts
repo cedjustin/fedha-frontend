@@ -7,8 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
+  showSearch = false;
+  showFilter = false;
+
   constructor() { }
   phoneNumber = '(+12) 222 3456 888';
+
+  changeShowSearch() {
+    this.showSearch = !this.showSearch;
+    this.showFilter = false;
+  }
+
+  changeFilterSearch() {
+    this.showSearch = false;
+    this.showFilter = !this.showFilter;
+  }
+
   ngOnInit() {
   }
 
