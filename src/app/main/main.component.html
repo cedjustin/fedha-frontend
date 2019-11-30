@@ -128,68 +128,44 @@
 
   <!--start of product column card-->
   <div class="container">
-    <div class="card-columns">
-      <div class="card product-card">
-        <img src="../../assets/img/product-01.jpg" class="card-img-top top-image-overlay" alt="...">
+    <div class="row d-flex justify-content-center">
+      <div class="card product-card" *ngFor="let post of posts" style="width: 13rem;">
+        <img src="{{post.linktoimage[0].pictures[0].linktoimage}}" class="card-img-top top-image-overlay" alt="...">
         <div class="d-flex justify-content-center">
           <div class="btn top-image-overlay-btn" data-toggle="modal" data-target=".bd-example-modal-xl">Quick View</div>
         </div>
         <div class="card-body t-30">
           <div class="d-flex justify-content-between">
-            <p class="card-text text-gray">This is a longer card.</p>
+            <p class="card-text text-gray">{{post.name}}</p>
             <i class="far fa-heart text-gray"></i>
           </div>
-          <p class="card-text text-gray">RWF20,000</p>
-        </div>
-      </div>
-      <div class="card product-card">
-        <img src="../../assets/img/product-02.jpg" class="card-img-top" alt="...">
-        <div class="d-flex justify-content-center">
-          <div class="btn top-image-overlay-btn" data-toggle="modal" data-target=".bd-example-modal-xl">Quick View</div>
-        </div>
-        <div class="card-body t-30">
-          <div class="d-flex justify-content-between">
-            <p class="card-text text-gray">This is a longer card.</p>
-            <i class="far fa-heart text-gray"></i>
+          <div class="d-flex justify-content-center">
+            <span class="card-text text-gray" [ngClass]="post.amount != _discountedPrice(post)?'line-through':''">
+              {{ post.amount | currency:'RWF' }}
+            </span>
+            <span class="card-text text-gray" *ngIf="post.amount != _discountedPrice(post)">
+              -{{_discountedPrice(post) | currency:'RWF'}}</span>
           </div>
-          <p class="card-text text-gray">RWF50,000</p>
-        </div>
-      </div>
-      <div class="card product-card">
-        <img src="../../assets/img/product-03.jpg" class="card-img-top" alt="...">
-        <div class="d-flex justify-content-center">
-          <div class="btn top-image-overlay-btn" data-toggle="modal" data-target=".bd-example-modal-xl">Quick View</div>
-        </div>
-        <div class="card-body t-30">
-          <div class="d-flex justify-content-between">
-            <p class="card-text text-gray">This is a longer card.</p>
-            <i class="far fa-heart text-gray"></i>
-          </div>
-          <p class="card-text text-gray">RWF10,000</p>
-        </div>
-      </div>
-      <div class="card product-card">
-        <img src="../../assets/img/product-04.jpg" class="card-img-top" alt="...">
-        <div class="d-flex justify-content-center">
-          <div class="btn top-image-overlay-btn" data-toggle="modal" data-target=".bd-example-modal-xl">Quick View</div>
-        </div>
-        <div class="card-body t-30">
-          <div class="d-flex justify-content-between">
-            <p class="card-text text-gray">This is a longer card.</p>
-            <i class="far fa-heart text-gray"></i>
-          </div>
-          <p class="card-text text-gray">
-            <span class="line-through">RWF10,000</span><span> - </span><span>RWF 8,000</span>
-          </p>
         </div>
       </div>
     </div>
   </div>
   <!--end of product column card-->
 
+  <!--start of alert-->
+  <div class="container">
+    <div class="alert alert-info border-0" role="alert" *ngIf="loadingMore == 1">
+      Loading more products!
+    </div>
+    <div class="alert alert-dark border-0" role="alert" *ngIf="loadingMore == 3">
+      No more Products!
+    </div>
+  </div>
+  <!--end of alert-->
+
   <!--start of more container button-->
-  <div class="container d-flex justify-content-center">
-    <div class="btn btn-outline-dark m-5">Load More</div>
+  <div class="container d-flex justify-content-center" *ngIf="loadingMore != 3">
+    <button class="btn btn-outline-dark m-5" (click)="_onLoadMore()">Load More</button>
   </div>
   <!--end of more container button-->
 

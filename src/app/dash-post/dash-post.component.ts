@@ -156,6 +156,7 @@ export class DashPostComponent implements OnInit {
   _onPageChange(page: number) {
     this.currentPage = page;
     const newOffset = (page - 1) * 10;
+    console.log(newOffset);
     if (this.offset === newOffset) {
       console.log('same page');
     } else {
