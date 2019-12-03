@@ -38,8 +38,8 @@
 
   <!--start of categories-->
   <div class="container">
-    <div class="card-deck mt-5 mb-5">
-      <div class="card bg-dark text-white category-card">
+    <div class="card-columns mt-5 mb-5 row d-flex justify-content-center">
+      <div class="card bg-dark text-white category-card m-3" style="width: 23rem;">
         <img src="../../assets/img/banner-01.jpg" class="card-img" alt="...">
         <div class="card-img-overlay">
           <h3 class="card-title text-dark">WOMEN</h3>
@@ -49,20 +49,10 @@
           </div>
         </div>
       </div>
-      <div class="card bg-dark text-white category-card">
+      <div class="card bg-dark text-white category-card m-3" style="width: 23rem;">
         <img src="../../assets/img/banner-02.jpg" class="card-img" alt="...">
         <div class="card-img-overlay">
           <h3 class="card-title text-dark">MEN</h3>
-          <p class="card-text text-dark">NEW TREND</p>
-          <div class="card-last-part">
-            <span class="fade-in-text btn btn-dark">SHOP NOW</span>
-          </div>
-        </div>
-      </div>
-      <div class="card bg-dark text-white category-card">
-        <img src="../../assets/img/banner-03.jpg" class="card-img" alt="...">
-        <div class="card-img-overlay">
-          <h3 class="card-title text-dark">ACCESSORIES</h3>
           <p class="card-text text-dark">NEW TREND</p>
           <div class="card-last-part">
             <span class="fade-in-text btn btn-dark">SHOP NOW</span>
@@ -74,187 +64,9 @@
   <!--end of categories-->
 
   <!--start of product overview-->
-  <div class="container mt-3 mb-3">
+  <div class="container mt-3">
     <strong class="display-4">PRODUCT OVERVIEW</strong>
-    <div class="mt-3 row">
-      <div>
-        <span class="border-bottom active m-1 btn tab-button">All Products</span>
-        <span class="border-bottom m-1 btn tab-button">Women</span>
-        <span class="border-bottom m-1 btn tab-button">Men</span>
-        <span class="border-bottom m-1 btn tab-button">Bag</span>
-        <span class="border-bottom m-1 btn tab-button">Shoes</span>
-        <span class="border-bottom m-1 btn tab-button">Accessories</span>
-      </div>
-      <div class="ml-auto">
-        <button class="btn accent-btn btn-large m-1" (click)="changeFilterSearch()">Filter</button>
-        <button class="btn accent-btn btn-large m-1" (click)="changeShowSearch()">Search</button>
-      </div>
-    </div>
-    <div class="row mt-4">
-      <div class="d-flex align-items-center container" [ngClass]="showSearch != false?'search':'noSearch'">
-        <i class="fas fa-search ml-2"></i>
-        <input type="text" placeholder="search" class="ml-1 search-input" />
-      </div>
-      <div class="bg-light d-flex justify-content-between container"
-        [ngClass]="showFilter != false?'filter':'noFilter'">
-        <div class="mt-4 ml-5 mb-4 filter-parts">
-          <h6>Sort By</h6>
-          <div class="mt-3">
-            <span class="text-gray">Default</span><br>
-            <span class="text-gray">High Rating</span><br>
-            <span class="text-gray">Price: High to Low</span><br>
-            <span class="text-gray">Price: Low to High</span>
-          </div>
-        </div>
-        <div class="mt-4 mb-4 filter-parts">
-          <h6>Price</h6>
-          <div class="mt-3">
-            <span class="text-gray">Default</span><br>
-            <span class="text-gray">RWF0-RWF10,000</span><br>
-            <span class="text-gray">RWF10,000-RWF50,000</span><br>
-            <span class="text-gray">RWF50,000+</span>
-          </div>
-        </div>
-        <div class="mt-4 mr-5 mb-4 filter-parts">
-          <h6>Color</h6>
-          <div class="mt-3">
-            <h6 class="text-gray">All</h6>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
   <!--end of product overview-->
-
-  <!--start of product column card-->
-  <div class="container">
-    <div class="row d-flex justify-content-center">
-      <div class="card product-card" *ngFor="let post of posts" style="width: 13rem;">
-        <img src="{{post.linktoimage[0].pictures[0].linktoimage}}" class="card-img-top top-image-overlay" alt="...">
-        <div class="d-flex justify-content-center">
-          <div class="btn top-image-overlay-btn" data-toggle="modal" data-target=".bd-example-modal-xl">Quick View</div>
-        </div>
-        <div class="card-body t-30">
-          <div class="d-flex justify-content-between">
-            <p class="card-text text-gray">{{post.name}}</p>
-            <i class="far fa-heart text-gray"></i>
-          </div>
-          <div class="d-flex justify-content-center">
-            <span class="card-text text-gray" [ngClass]="post.amount != _discountedPrice(post)?'line-through':''">
-              {{ post.amount | currency:'RWF' }}
-            </span>
-            <span class="card-text text-gray" *ngIf="post.amount != _discountedPrice(post)">
-              -{{_discountedPrice(post) | currency:'RWF'}}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--end of product column card-->
-
-  <!--start of alert-->
-  <div class="container">
-    <div class="alert alert-info border-0" role="alert" *ngIf="loadingMore == 1">
-      Loading more products!
-    </div>
-    <div class="alert alert-dark border-0" role="alert" *ngIf="loadingMore == 3">
-      No more Products!
-    </div>
-  </div>
-  <!--end of alert-->
-
-  <!--start of more container button-->
-  <div class="container d-flex justify-content-center" *ngIf="loadingMore != 3">
-    <button class="btn btn-outline-dark m-5" (click)="_onLoadMore()">Load More</button>
-  </div>
-  <!--end of more container button-->
-
-  <!--start of a modal-->
-  <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header border-0">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-2 container">
-              <div class="card border-0 m-2" style="width:5rem">
-                <img src="../../assets/img/product-detail-01.jpg" class="card-img-top" alt="...">
-              </div>
-              <div class="card border-0 m-2" style="width:5rem">
-                <img src="../../assets/img/product-detail-02.jpg" class="card-img-top" alt="...">
-              </div>
-              <div class="card border-0 m-2" style="width:5rem">
-                <img src="../../assets/img/product-detail-03.jpg" class="card-img-top" alt="...">
-              </div>
-            </div>
-            <div class="col-5">
-              <div class="card border-0 m-2 bg-pimary" style="width:27rem">
-                <img src="../../assets/img/product-detail-01.jpg" class="card-img-top" alt="...">
-                <div class="card-body d-flex justify-content-between floating-row">
-                  <div class="btn btn-dark btn-sm">prev</div>
-                  <div class="btn btn-dark btn-sm">next</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-5 container">
-              <p class="lead m-3">Lightweight Jacket</p>
-              <p class="h5 m-3">RWF50</p>
-              <p class="m-3 text-muted">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum ducimus quasi
-                error omnis quos iste sit ipsum eveniet repellendus molestias, quidem iusto quaerat unde, alias
-                doloremque culpa atque ad odio!</p>
-              <div class="container">
-                <div>
-                  <div class="row ml-3 mr-3 mt-5">
-                    <div class="col-2 d-flex justify-content-center align-items-center">
-                      Size
-                    </div>
-                    <div class="col-10">
-                      <select class="custom-select" id="inputGroupSelect01">
-                        <option selected>Choose...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row m-3">
-                    <div class="col-2 d-flex justify-content-center align-items-center">
-                      Color
-                    </div>
-                    <div class="col-10">
-                      <select class="custom-select" id="inputGroupSelect01">
-                        <option selected>Choose...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="container-fluid d-flex justify-content-center mt-5">
-                <div class="btn btn-accent btn-large">
-                  Contact us now
-                </div>
-              </div>
-              <div class="container-fluid d-flex justify-content-center mt-3 align-items-center">
-                <div class="m-1 border-right">
-                  <i class="fas fa-heart m-1 text-gray"></i>
-                </div>
-                <i class="fab fa-facebook-f m-1 text-gray"></i>
-                <i class="fab fa-twitter m-1 text-gray"></i>
-                <i class="fab fa-instagram m-1 text-gray"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--end of a modal-->
+  <router-outlet></router-outlet>
 </div>

@@ -20,6 +20,9 @@ import { RatingModule } from 'ng-starrating';
 import { GenderComponent } from './gender/gender.component';
 import { OnSaleComponent } from './on-sale/on-sale.component';
 import { OnDiscountComponent } from './on-discount/on-discount.component';
+import { ProductsComponent } from './products/products.component';
+import { ShopComponent } from './shop/shop.component';
+import { CarouselComponent } from './carousel/carousel.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,10 @@ import { OnDiscountComponent } from './on-discount/on-discount.component';
     DashPostComponent,
     GenderComponent,
     OnSaleComponent,
-    OnDiscountComponent
+    OnDiscountComponent,
+    ProductsComponent,
+    ShopComponent,
+    CarouselComponent
   ],
   imports: [
     BrowserModule,

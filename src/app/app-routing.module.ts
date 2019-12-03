@@ -10,6 +10,8 @@ import { DashPostComponent } from './dash-post/dash-post.component';
 import { GenderComponent } from './gender/gender.component';
 import { OnSaleComponent } from './on-sale/on-sale.component';
 import { OnDiscountComponent } from './on-discount/on-discount.component';
+import { ProductsComponent } from './products/products.component';
+import { ShopComponent } from './shop/shop.component';
 
 
 const routes: Routes = [
@@ -17,7 +19,26 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent,
     children: [
-      { path: '', component: MainComponent }
+      {
+        path: '',
+        component: MainComponent,
+        children: [
+          {
+            path: '',
+            component: ProductsComponent
+          }
+        ]
+      },
+      {
+        path: 'shop',
+        component: ShopComponent,
+        children: [
+          {
+            path: '',
+            component: ProductsComponent
+          }
+        ]
+      }
     ]
   },
   {

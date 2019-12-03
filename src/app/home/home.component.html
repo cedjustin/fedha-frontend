@@ -10,25 +10,32 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link text-hover-accent" href="#">Home <span class="sr-only">(current)</span></a>
+          <li class="nav-item">
+            <a class="nav-link" (click)="_changeRoute('/home')"
+              [ngClass]="(currentRoute=='/home')?'text-dark':'text-gray'">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-hover-accent" href="#">Shop</a>
+            <div class="dropdown">
+              <a class="nav-link" (click)="_changeRoute('/home/shop')"
+                [ngClass]="(currentRoute=='/home/shop')?'text-dark':'text-gray'">Shop</a>
+            </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-hover-accent" href="#">Blog</a>
+            <a class="nav-link text-hover-accent">Blog</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-hover-accent" href="#">About us</a>
+            <a class="nav-link text-hover-accent">About us</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-hover-accent" href="#">Contact us</a>
+            <a class="nav-link text-hover-accent">Contact us</a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <i class="fas fa-search text-hover-accent m-2"></i>
-          <i class="fas fa-heart text-hover-accent m-2"></i>
+        <form class="form-inline my-2 my-lg-0 row mr-5">
+          <div class="search-container">
+            <input class="input-container" text="text" placeholder="search" />
+            <i class="fa fa-search" id="search-icon"></i>
+          </div>
+          <i class="fas fa-heart text-hover-accent mr-5" [ngClass]="likedPostExists?'text-accent':'text-dark'"></i>
         </form>
       </div>
     </nav>
@@ -38,7 +45,7 @@
   <!--start if the footer-->
   <div class="bg-dark">
     <div class="container d-flex justify-content-around pt-3 pb-3 align-items-center">
-        <span class="text-light"> © {{year}} Fedha. All rights reserved.</span>
+      <span class="text-light"> © {{year}} Fedha. All rights reserved.</span>
     </div>
   </div>
   <!--end of footer-->

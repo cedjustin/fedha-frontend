@@ -1,19 +1,113 @@
 $accent-color: #46b3e6;
-.text-hover-accent:hover{
+
+.text-hover-accent:hover {
   color: $accent-color;
   transition: all 0.9s;
 }
 
-.z-index-1{
+.text-accent {
+  color: $accent-color !important
+}
+
+.z-index-1 {
   position: absolute;
   top: 0;
-  left:0;
+  left: 0;
   right: 0;
   z-index: 1;
 }
 
 .sticky {
   background: #fff;
-  box-shadow: 0 3px 12px 0 rgba(0,0,0,.08);
+  box-shadow: 0 3px 12px 0 rgba(0, 0, 0, .08);
   position: fixed;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 160px;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  padding: 6px 8px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.input-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 42.5px;
+  line-height: 30px;
+  outline: 0;
+  border: 0;
+  display: none;
+  font-size: 1em;
+  border-radius: 20px;
+  padding: 0 20px;
+}
+
+
+.search-container {
+  transform: translate(-50px, 0px);
+  transition: all 0.9s;
+  width: 50px;
+  height: 50px;
+  box-sizing: border-box;
+  border-radius: 25px;
+  border: 4px solid white !important;
+}
+
+.fa {
+  box-sizing: border-box;
+  padding: 10px;
+  width: 42.5px;
+  height: 42.5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 1.2em;
+  transition: all 1s;
+}
+
+.search-container:hover {
+  width: 200px;
+  cursor: pointer;
+}
+
+.search-container:hover .input-container {
+  display: block;
+}
+
+.input-container:focus {
+  display: block;
+}
+
+.input-container:focus .search-container {
+  width: 200px;
+  cursor: pointer;
+}
+
+.fa-heart {
+  cursor: pointer;
+}
+
+.fa-heart:hover {
+  cursor: pointer;
+}
+
+.nav-link {
+  cursor: pointer;
 }

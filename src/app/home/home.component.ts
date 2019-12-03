@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener, Inject } from '@angular/core';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { DOCUMENT } from '@angular/common';
 import { HttpService } from '../http.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,7 @@ import { HttpService } from '../http.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(@Inject(DOCUMENT) document, private http: HttpService) { }
+  constructor(@Inject(DOCUMENT) document, private http: HttpService, private router: Router) { }
 
   title = 'Fedha';
   nameBrand = 'FEDHA';
@@ -26,11 +27,33 @@ export class HomeComponent implements OnInit {
   year = this.d.getFullYear();
   phoneNumber = '(+12) 222 3456 888';
   emailAddress = 'example@example.com';
-  posts: any = [];
-  loadingData = false;
+  likedPosts = [];
+  likedPostExists = false;
+  currentRoute: any;
+
+  _getCurrentRoute() {
+    this.currentRoute = this.router.url;
+  }
+
+  // a function to get local data
+  _checkLikedPosts() {
+    const value = JSON.parse(localStorage.getItem('likedPosts'));
+    if (value === null || value.length === 0) {
+      this.likedPostExists = false;
+    } else {
+      this.likedPostExists = true;
+    }
+  }
+
+  _changeRoute(route: string) {
+    this.currentRoute = route;
+    this.router.navigate([route]);
+  }
 
 
   ngOnInit() {
+    this._getCurrentRoute();
+    setInterval(() => { this._checkLikedPosts(); }, 1000);
   }
 
   @HostListener('window:scroll', ['$event'])

@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class HttpService {
 
   // tslint:disable-next-line: variable-name
-  private _rootUrl = 'http://localhost:3000/api/';
+  private _rootUrl = 'https://fedha.herokuapp.com/api/';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -54,6 +54,18 @@ export class HttpService {
       })
     };
     return this.http.get<any>(this._rootUrl + 'get-posts', httpOptions);
+  }
+
+  // get all post by condition
+  _getPostsByCondition(condition: any, offset: any, value: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        condition,
+        offset,
+        value
+      })
+    };
+    return this.http.get<any>(this._rootUrl + 'get-posts-by-condition', httpOptions);
   }
 
   // get all posts on sale
@@ -110,6 +122,11 @@ export class HttpService {
   // get colors
   _getColors() {
     return this.http.get<any>(this._rootUrl + 'get-colors');
+  }
+
+  // get colors
+  _getTypes() {
+    return this.http.get<any>(this._rootUrl + 'get-types');
   }
 
   // delete gender
