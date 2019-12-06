@@ -12,6 +12,9 @@ import { OnSaleComponent } from './on-sale/on-sale.component';
 import { OnDiscountComponent } from './on-discount/on-discount.component';
 import { ProductsComponent } from './products/products.component';
 import { ShopComponent } from './shop/shop.component';
+import { CarouselComponent } from './carousel/carousel.component';
+import { ShopInfoComponent } from './shop-info/shop-info.component';
+import { DashBlogComponent } from './dash-blog/dash-blog.component';
 
 
 const routes: Routes = [
@@ -55,6 +58,9 @@ const routes: Routes = [
           { path: 'onsale', component: OnSaleComponent },
           { path: 'ondiscount', component: OnDiscountComponent },
           { path: 'gender', component: GenderComponent },
+          { path: 'carousel', component: CarouselComponent },
+          { path: 'shop-info', component: ShopInfoComponent },
+          { path: 'blog', component: DashBlogComponent },
         ]
       }
     ]

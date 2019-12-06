@@ -2,34 +2,35 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
 
 @Component({
-  selector: 'app-carousel',
-  templateUrl: './carousel.component.html',
-  styleUrls: ['./carousel.component.scss']
+  selector: 'app-shop-info',
+  templateUrl: './shop-info.component.html',
+  styleUrls: ['./shop-info.component.scss']
 })
-export class CarouselComponent implements OnInit {
+export class ShopInfoComponent implements OnInit {
 
-  carouselData: any = [];
   loadingData = 0;
   connection: any = {
     error: 0,
     message: ''
   };
   dataLoaded = 0;
-  currentslide: any = {
-    name: null,
-    linktoimage: null
-  };
+  shopinfo: any;
+  currentshopinfo: any = [{
+    email: null,
+    phone: null,
+    location: null,
+  }];
 
   constructor(private http: HttpService) { }
 
-  // get carousel data
-  _getCarouselData() {
+  _getShopInfo() {
     this.loadingData = 1;
-    this.http._getCarousel().subscribe(
+    this.http._getShopInfo().subscribe(
       res => {
+        this.shopinfo = res.response.data;
+        this.shopinfo[0].about = JSON.parse(this.shopinfo[0].about);
+        this.currentshopinfo = this.shopinfo;
         this.loadingData = 0;
-        this.carouselData = res.response.data;
-        this.carouselData.length > 0 ? this.dataLoaded = 1 : this.dataLoaded = 0;
       },
       err => {
         this.loadingData = 0;
@@ -41,20 +42,14 @@ export class CarouselComponent implements OnInit {
     );
   }
 
-  // set current slide
-  _setCurrentSlide(slide: object) {
-    this.currentslide = slide;
-  }
-
-  // update a slide
-  _updateSlide() {
-    this.http._updCarousel(this.currentslide).subscribe(
+  _updateShopInfo() {
+    const data = this.currentshopinfo;
+    data[0].about = JSON.stringify(data[0].about);
+    this.http._updShopinfo(data[0]).subscribe(
       res => {
         // tslint:disable-next-line: triple-equals
         if (res.response.error == 0) {
-          this._getCarouselData();
-        } else {
-          console.log(res.response);
+          this._getShopInfo();
         }
       },
       err => {
@@ -63,11 +58,13 @@ export class CarouselComponent implements OnInit {
           message: 'Connection problem, check your internet and refresh the page'
         };
       }
-    )
+    );
   }
 
+
+
   ngOnInit() {
-    this._getCarouselData();
+    this._getShopInfo();
   }
 
 }

@@ -133,6 +133,7 @@ export class DashPostComponent implements OnInit {
             // getting colorinfo
             post.linktoimage.forEach(element => {
               element.colorinfo = this.allcolors.find(color => {
+                // tslint:disable-next-line: triple-equals
                 return color.id == JSON.parse(element.colorid);
               });
             });

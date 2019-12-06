@@ -1,1 +1,84 @@
-<p>carousel works!</p>
+<ng-template [ngIf]="loadingData == 1">
+  <div class="alert alert-primary" role="alert">
+    Loading data.....
+  </div>
+</ng-template>
+
+<!--alert to show that the connection is down-->
+<ng-template [ngIf]="connection.error == 1">
+  <div class="alert alert-warning fade show" role="alert">
+    {{connection.message}}.
+  </div>
+</ng-template>
+
+
+<div class="container" *ngIf="dataLoaded == 1">
+  <div class="card-deck">
+    <div class="card text-white border-0">
+      <img src="{{carouselData[0].linktoimage}}" class="card-img" alt="...">
+      <div class="card-img-overlay">
+        <h5 class="card-title">{{carouselData[0].name}}</h5>
+        <div class="card-text">
+          <div class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModal" (click)="_setCurrentSlide(carouselData[0])">Edit</div>
+        </div>
+      </div>
+    </div>
+    <div class="card text-white border-0">
+      <img src="{{carouselData[1].linktoimage}}" class="card-img" alt="...">
+      <div class="card-img-overlay">
+        <h5 class="card-title">{{carouselData[1].name}}</h5>
+        <div class="card-text">
+          <div class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModal" (click)="_setCurrentSlide(carouselData[1])">Edit</div>
+        </div>
+      </div>
+    </div>
+    <div class="card text-white border-0">
+      <img src="{{carouselData[2].linktoimage}}" class="card-img" alt="...">
+      <div class="card-img-overlay">
+        <h5 class="card-title">{{carouselData[2].name}}</h5>
+        <div class="card-text">
+          <div class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModal" (click)="_setCurrentSlide(carouselData[2])">Edit</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-8">
+            <img src="../../assets/img/edit-slider.svg" alt="Loading" class="edit-slider" />
+          </div>
+          <div class="col-4">
+            <div class="m-3">
+              <span class="lead">Edit carousel slider</span>
+            </div>
+            <div class="input-group mt-3 mb-1">
+              <textarea type="text" class="form-control" placeholder="Link to image" aria-label="Username"
+                aria-describedby="basic-addon1" [(ngModel)]="currentslide.name"></textarea>
+            </div>
+            <div class="input-group mt-3 mb-1">
+              <input type="text" class="form-control" placeholder="Link to image" aria-label="Username"
+                aria-describedby="basic-addon1" [(ngModel)]="currentslide.linktoimage" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="_updateSlide()" data-dismiss="modal">Edit</button>
+      </div>
+    </div>
+  </div>
+</div>

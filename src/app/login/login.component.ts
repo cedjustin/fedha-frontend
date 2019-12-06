@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
         }
       },
       err => {
+        this.signInMessage = 'SIGN IN';
         this.loginResponse.response.message = 'Connection problem, check your internet';
         this.loginResponse.response.error = 1;
       }

@@ -1,0 +1,161 @@
+<ng-template [ngIf]="loadingData == 1">
+  <div class="alert alert-primary" role="alert">
+    Loading data.....
+  </div>
+</ng-template>
+
+<!--alert to show that the connection is down-->
+<ng-template [ngIf]="connection.error == 1">
+  <div class="alert alert-warning fade show" role="alert">
+    {{connection.message}}.
+  </div>
+</ng-template>
+
+<div class="cards-container" *ngIf="dataLoaded == 1">
+  <div class="card-columns row">
+    <div class="card m-2" *ngFor="let blog of blogData" style="width: 23rem;">
+      <img src="{{blog.linktoimage}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title text-truncate" style="text-transform: capitalize;">{{blog.title}}</h5>
+        <p class="card-text text-truncate">{{blog.content}}.</p>
+        <p class="card-text"><small class="text-muted">You have {{blog.commentsSize}} comments</small></p>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-outline-disabled m-1" data-toggle="modal" data-target="#commentExampleModal"
+          (click)="_getCurrentBlog(blog)" disabled>Comments</button>
+        <div class="btn btn-outline-primary m-1" data-toggle="modal" data-target="#ediExampleModal"
+          (click)="_getCurrentBlog(blog)">Edit</div>
+        <div class="btn btn-outline-danger m-1" (click)="_delBlog(blog.id)">Delete</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--load more button-->
+<div class="container d-flex justify-content-center m-3">
+  <button class="btn btn-outline-dark" (click)="_loadMore()">Load More</button>
+</div>
+<!-- end of load more button-->
+
+<!--start floating button-->
+<a class="float" data-toggle="modal" data-target="#exampleModal">
+  <i class="fa fa-plus my-float"></i>
+</a>
+<!--end of floating button-->
+
+
+<!--start of add blog modal-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="exampleModalLabel">Add a blog</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <!--alert to show that the connection is down-->
+          <ng-template [ngIf]="inPutError == 1">
+            <div class="alert alert-warning fade show" role="alert">
+              Please fill in all the necessary inputs.
+            </div>
+          </ng-template>
+          <div class="">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Link to Image</label>
+              <input type="link to image" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Link to image" [(ngModel)]="newBlog.linktoimage">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Title</label>
+              <input type="Title" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Title" [(ngModel)]="newBlog.title">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Content</label>
+              <textarea type="text" class="form-control" id="exampleInputPassword1" placeholder="Content"
+                [(ngModel)]="newBlog.content"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="_addBlog()" data-dismiss="modal">Add a blog</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end of add blog modal-->
+
+<!--start of edit blog modal-->
+<div class="modal fade" id="ediExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="exampleModalLabel">Edit a blog</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <!--alert to show that the connection is down-->
+          <ng-template [ngIf]="inPutError == 1">
+            <div class="alert alert-warning fade show" role="alert">
+              Please fill in all the necessary inputs.
+            </div>
+          </ng-template>
+          <div class="">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Link to Image</label>
+              <input type="link to image" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Link to image" [(ngModel)]="currentBlog.linktoimage">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Title</label>
+              <input type="Title" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Title" [(ngModel)]="currentBlog.title">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Content</label>
+              <textarea type="text" class="form-control" id="exampleInputPassword1" placeholder="Content"
+                [(ngModel)]="currentBlog.content"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="_editBlog()" data-dismiss="modal">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end of edit blog modal-->
+
+<!--start of edit blog modal-->
+<div class="modal fade" id="commentExampleModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="exampleModalLabel">Comments</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="_editBlog()" data-dismiss="modal">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end of edit blog modal-->

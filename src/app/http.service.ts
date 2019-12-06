@@ -95,6 +95,11 @@ export class HttpService {
   // category and gender
 
   // add gender
+  _addBlog(blog: object) {
+    return this.http.post<any>(this._rootUrl + 'add-blog-content', blog);
+  }
+
+  // add gender
   _addGender(gender: object) {
     return this.http.post<any>(this._rootUrl + 'add-gender', gender);
   }
@@ -107,6 +112,11 @@ export class HttpService {
   // add category
   _addCategory(category: object) {
     return this.http.post<any>(this._rootUrl + 'add-category', category);
+  }
+
+  // get carousel
+  _getCarousel() {
+    return this.http.get<any>(this._rootUrl + 'get-carousel');
   }
 
   // get gender
@@ -125,13 +135,33 @@ export class HttpService {
   }
 
   // get colors
+  _getBlog(offset: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        offset
+      })
+    };
+    return this.http.get<any>(this._rootUrl + 'get-blog-content', httpOptions);
+  }
+
+  // get colors
   _getTypes() {
     return this.http.get<any>(this._rootUrl + 'get-types');
+  }
+
+  // get shop info
+  _getShopInfo() {
+    return this.http.get<any>(this._rootUrl + 'get-shop-info');
   }
 
   // delete gender
   _delGender(genderId: number) {
     return this.http.delete<any>(this._rootUrl + 'del-gender/' + genderId);
+  }
+
+  // delete blog
+  _delBlog(blogId: number) {
+    return this.http.delete<any>(this._rootUrl + 'del-blog-content/' + blogId);
   }
 
   // delete category
@@ -142,6 +172,16 @@ export class HttpService {
   // update gender
   _updGender(gender: object) {
     return this.http.put<any>(this._rootUrl + 'upd-gender', gender);
+  }
+
+  // update shopinfo
+  _updShopinfo(info: object) {
+    return this.http.put<any>(this._rootUrl + 'upd-shop-info', info);
+  }
+
+  // update shopinfo
+  _updBlogContent(blog: object) {
+    return this.http.put<any>(this._rootUrl + 'upd-blog-content', blog);
   }
 
   // update category
@@ -164,6 +204,10 @@ export class HttpService {
     return this.http.put<any>(this._rootUrl + 'upd-post', post);
   }
 
+  // update carousel
+  _updCarousel(slider: object) {
+    return this.http.put<any>(this._rootUrl + 'upd-carousel', slider);
+  }
 
   // del a new post
   _delPost(postid: number) {

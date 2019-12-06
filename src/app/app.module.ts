@@ -23,6 +23,8 @@ import { OnDiscountComponent } from './on-discount/on-discount.component';
 import { ProductsComponent } from './products/products.component';
 import { ShopComponent } from './shop/shop.component';
 import { CarouselComponent } from './carousel/carousel.component';
+import { ShopInfoComponent } from './shop-info/shop-info.component';
+import { DashBlogComponent } from './dash-blog/dash-blog.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { CarouselComponent } from './carousel/carousel.component';
     OnDiscountComponent,
     ProductsComponent,
     ShopComponent,
-    CarouselComponent
+    CarouselComponent,
+    ShopInfoComponent,
+    DashBlogComponent
   ],
   imports: [
     BrowserModule,

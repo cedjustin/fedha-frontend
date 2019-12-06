@@ -1,4 +1,4 @@
-$accent-color: #AF996B;
+$accent-color: #46b3e6;
 
 .feather {
     width: 16px;
@@ -92,3 +92,13 @@ $accent-color: #AF996B;
   
   .border-top { border-top: 1px solid #e5e5e5; }
   .border-bottom { border-bottom: 1px solid #e5e5e5; }
+.nav-link {
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.nav-link:hover {
+  color: $accent-color !important;
+  cursor: pointer;
+  transition: all 0.5s;
+}
