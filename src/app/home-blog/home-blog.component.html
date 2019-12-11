@@ -1,0 +1,160 @@
+<div class="body">
+  <div *ngIf="loadingData == 1"
+    class="activity-indicator-container container d-flex justify-content-center align-items-center">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
+  <!--start of all body container-->
+  <div *ngIf="dataLoaded == 1">
+    <!--start of image background-->
+    <div class="top-img-bck d-flex justify-content-center align-items-center">
+      <span class="h1 text-light">Blog</span>
+    </div>
+    <!--end of image background-->
+
+    <!--start of blog row container-->
+    <div class="container body">
+      <div class="row mt-5 mb-5">
+        <div class="col-8">
+          <div class="card-columns row d-flex justify-content-center align-items-center">
+            <div class="card" style="width: 75rem; border:none" *ngFor="let blog of blogData">
+              <img src="{{blog.linktoimage}}" class="card-img-top" alt=".." data-toggle="modal"
+                data-target="#exampleModal" (click)="_getCurrentBlog(blog)" />
+              <div class="time-date-container">
+                <div class="m-2">
+                  <div class="container d-flex justify-content-center">
+                    <strong class="h2">{{_getDay(blog.datecreated)}}</strong>
+                  </div>
+                  <div class="container d-flex justify-content-center text-capitalize text-small">
+                    {{_getMonthNYear(blog.datecreated)}}</div>
+                </div>
+              </div>
+              <div class="mt-4 mb-4">
+                <div class="h3 font-weight-bold mb-4 continue-reading" data-toggle="modal" data-target="#exampleModal"
+                  (click)="_getCurrentBlog(blog)">
+                  {{blog.title}}
+                </div>
+                <span class="text-gray d-inline-block text-truncate" style="max-width: 100%;">{{blog.content}}</span>
+                <div class="mt-3 d-flex justify-content-end">
+                  <span class="h6 continue-reading" data-toggle="modal" data-target="#exampleModal"
+                    (click)="_getCurrentBlog(blog)">CONTINUE
+                    READING</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+            <div class="lds-grid" *ngIf="onSaleDataLoaded==0"><div></div><div></div><div></div><div>
+          <div *ngIf="onSaleDataLoaded==1">
+            <span class="h4">
+              Featured Products
+            </span>
+            <div>
+              <div class="row mt-3">
+                <div class="col-4">
+                  <img src="../../assets/img/product-01.jpg" alt="..." style="width: 7rem;">
+                </div>
+                <div class="col-8">
+                  <div>
+                    <span class="h6">{{posts[0].name}}</span>
+                  </div>
+                  <div class="mt-2">
+                    <span class="card-text text-gray" [ngClass]="posts[0].amount != _discountedPrice(posts[0])?'line-through':''">
+                      {{ posts[0].amount | currency:'RWF' }}
+                    </span>
+                    <span class="card-text text-gray" *ngIf="posts[0].amount != _discountedPrice(posts[0])">
+                      -{{_discountedPrice(posts[0]) | currency:'RWF'}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-4">
+                  <img src="../../assets/img/product-01.jpg" alt="..." style="width: 7rem;">
+                </div>
+                <div class="col-8">
+                  <div>
+                    <span class="h6">{{posts[1].name}}</span>
+                  </div>
+                  <div class="mt-2">
+                    <span class="card-text text-gray" [ngClass]="posts[1].amount != _discountedPrice(posts[1])?'line-through':''">
+                      {{ posts[1].amount | currency:'RWF' }}
+                    </span>
+                    <span class="card-text text-gray" *ngIf="posts[1].amount != _discountedPrice(posts[1])">
+                      -{{_discountedPrice(posts[1]) | currency:'RWF'}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-4">
+                  <img src="../../assets/img/product-01.jpg" alt="..." style="width: 7rem;">
+                </div>
+                <div class="col-8">
+                  <div>
+                    <span class="h6">{{posts[2].name}}</span>
+                  </div>
+                  <div class="mt-2">
+                    <span class="card-text text-gray" [ngClass]="posts[2].amount != _discountedPrice(posts[2])?'line-through':''">
+                      {{ posts[2].amount | currency:'RWF' }}
+                    </span>
+                    <span class="card-text text-gray" *ngIf="posts[2].amount != _discountedPrice(posts[2])">
+                      -{{_discountedPrice(posts[2]) | currency:'RWF'}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end of blog row container-->
+  </div>
+  <!--end of all body container-->
+
+  <!--start of error handle-->
+  <div class="error-container d-flex justify-content-center align-items-center" *ngIf="connection.error == 1">
+    <img src="../../assets/img/connection-error.svg" alt="" class="error-img">
+  </div>
+  <!--end of error handle-->
+
+  <!--start of view details modal-->
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card-columns row d-flex justify-content-center align-items-center">
+            <div class="card" style="width: 40rem; border:none">
+              <img src="{{currentBlog.linktoimage}}" class="card-img-top" alt=".." />
+              <div class="time-date-container">
+                <div class="m-2">
+                  <div class="container d-flex justify-content-center">
+                    <strong class="h2">{{_getDay(currentBlog.datecreated)}}</strong>
+                  </div>
+                  <div class="container d-flex justify-content-center text-capitalize text-small">
+                    {{_getMonthNYear(currentBlog.datecreated)}}</div>
+                </div>
+              </div>
+              <div class="mt-4 mb-4">
+                <div class="h3 font-weight-bold mb-4">
+                  {{currentBlog.title}}
+                </div>
+                <span class="text-gray angular-with-newlines">{{currentBlog.content}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--end of view details modal-->
+</div>

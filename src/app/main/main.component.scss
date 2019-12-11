@@ -68,13 +68,6 @@ $accent-color: #46b3e6;
   border: solid $accent-color 1px;
 }
 
-.search {
-  height: 70px;
-  width: 100%;
-  border: solid gray 1px;
-  transition: all 0.5s;
-}
-
 .noSearch {
   height: 0px !important;
   width: 100%;
@@ -88,17 +81,6 @@ $accent-color: #46b3e6;
 
 .noSearch>.search-input {
   display: none;
-}
-
-.search-input {
-  width: 100%;
-  border: none;
-}
-
-.search-input:focus {
-  width: 100%;
-  border: none !important;
-  outline-width: 0;
 }
 
 .filter {
@@ -235,4 +217,50 @@ $accent-color: #46b3e6;
   height: 10px;
   width: 10px;
   border-radius: 50%;
+}
+
+//activity indicator animation
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid rgb(0, 0, 0);
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
+}
+
+.activity-indicator-container {
+  min-height: 100vh;
+}
+
+.text-capitalize {
+  text-transform: uppercase;
 }

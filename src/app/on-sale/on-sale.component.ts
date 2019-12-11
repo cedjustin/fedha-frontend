@@ -92,7 +92,6 @@ export class OnSaleComponent implements OnInit {
         } else {
           this.posts = res.response.data;
           this.posts.forEach(post => {
-            post.rate = JSON.parse(post.rate);
             post.linktoimage = JSON.parse(post.linktoimage);
           });
           this._checkIfSaleExp();

@@ -1,0 +1,51 @@
+<div class="body">
+  <div class="activity-indicator-container container d-flex justify-content-center align-items-center"
+    *ngIf="loadingData==1">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <!--start of all body container-->
+  <div *ngIf="dataLoaded==1">
+
+    <!--start of image background-->
+    <div class="top-img-bck d-flex justify-content-center align-items-center">
+      <span class="h1 text-light">About</span>
+    </div>
+    <!--end of image background-->
+
+    <!--start of error handle-->
+    <div class="error-container d-flex justify-content-center align-items-center" *ngIf="connection.error == 1">
+      <img src="../../assets/img/connection-error.svg" alt="" class="error-img">
+    </div>
+    <!--end of error handle-->
+
+    <!--start of our story row-->
+    <div class="container mt-5 mb-5">
+      <div class="row">
+        <div class="col-7">
+          <span class="h2 font-weight-bold">Our Story</span>
+          <p class="mt-4 angular-with-newlines">{{shopinfo[0].about.ourstory}}</p>
+        </div>
+        <div class="col-5">
+          <div class="d-flex justify-content-center align-items-center bordered-img-container">
+            <img src="../../assets/img/about-01.jpg" alt="..." class="img-card m-3" />
+          </div>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-5">
+          <div class="d-flex justify-content-center align-items-center bordered-img-container">
+            <img src="../../assets/img/about-02.jpg" alt="..." class="img-card m-3" />
+          </div>
+        </div>
+        <div class="col-7">
+          <span class="h2 font-weight-bold">Our Mission</span>
+          <p class="mt-4 angular-with-newlines">{{shopinfo[0].about.mission}}</p>
+        </div>
+      </div>
+    </div>
+    <!--end of our story row-->
+  </div>
+</div>

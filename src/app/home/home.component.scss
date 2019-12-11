@@ -65,7 +65,8 @@ $accent-color: #46b3e6;
   height: 50px;
   box-sizing: border-box;
   border-radius: 25px;
-  border: 4px solid white !important;
+  border: 4px solid rgb(230, 230, 230) !important;
+  background: rgb(230, 230, 230)
 }
 
 .fa {
@@ -82,6 +83,11 @@ $accent-color: #46b3e6;
   transition: all 1s;
 }
 
+.search-container{
+  width: 200px;
+  cursor: pointer;
+}
+
 .search-container:hover {
   width: 200px;
   cursor: pointer;
@@ -91,12 +97,19 @@ $accent-color: #46b3e6;
   display: block;
 }
 
-.input-container:focus {
+
+.input-container {
+  background-color: rgba(230, 230, 230, 0);
   display: block;
 }
 
+.input-container:focus {
+  display: block;
+  background-color: rgba(230, 230, 230, 0);
+}
+
 .input-container:focus .search-container {
-  width: 200px;
+  width: 200px !important;
   cursor: pointer;
 }
 
@@ -110,4 +123,8 @@ $accent-color: #46b3e6;
 
 .nav-link {
   cursor: pointer;
+}
+
+.hide{
+  display: none;
 }

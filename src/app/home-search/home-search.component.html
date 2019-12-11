@@ -1,0 +1,172 @@
+<div class="body">
+  <!--start of image background-->
+  <div class="top-img-bck d-flex justify-content-center align-items-center">
+    <span class="h1 text-light">Search</span>
+  </div>
+  <!--end of image background-->
+  <div class="body-container mt-5">
+    <!--start of search container-->
+    <div class="d-flex align-items-center container search">
+      <input type="text" placeholder="search" class="ml-1 search-input" [(ngModel)]="searchedValue" autofocus
+        (keyup.enter)="_getSearchedData()" />
+      <i class="fas fa-search ml-5" (click)="_getSearchedData()"></i>
+    </div>
+    <!--end of search container-->
+    <!--start of product column card-->
+    <div class="container mt-5" *ngIf="postsLoaded == 1">
+      <div class="card-columns row d-flex justify-content-center">
+        <div class="card product-card m-1 animated fadeIn" *ngFor="let post of posts; let i = index"
+          style="width: 13rem;">
+          <img src="{{post.linktoimage[0].pictures[0].linktoimage}}" class="card-img-top top-image-overlay" alt="...">
+          <div class="d-flex justify-content-center">
+            <div class="btn top-image-overlay-btn" data-toggle="modal" data-target=".bd-example-modal-xl"
+              (click)="_selectPost(post,i)">Quick View</div>
+          </div>
+          <div class="card-body t-30">
+            <div class="d-flex justify-content-between">
+              <p class="card-text text-gray">{{post.name}}</p>
+              <i class=""
+                [ngClass]="post.liked == 1 || post.like == 1?'fas fa-heart text-accent':'far fa-heart text-gray'"
+                (click)="_onLike(i)"></i>
+            </div>
+            <div class="d-flex justify-content-center">
+              <span class="card-text text-gray" [ngClass]="post.amount != _discountedPrice(post)?'line-through':''">
+                {{ post.amount | currency:'RWF' }}
+              </span>
+              <span class="card-text text-gray" *ngIf="post.amount != _discountedPrice(post)">
+                -{{_discountedPrice(post) | currency:'RWF'}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end of product column card-->
+    <!--start of activity indicator-->
+    <div class="container d-flex justify-content-center mt-5" *ngIf="loadingPosts == 1">
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <!--end of activity indicator-->
+    <!--start of no results-->
+    <div class="container d-flex justify-content-center mt-5" *ngIf="noResult == 1">
+      <div>
+        <div class="mt-2">
+          <img src="../../assets/img/no-result.svg" alt="..." style="width: 10rem;">
+        </div>
+        <div class="mt-1 d-flex justify-content-center">
+          <span class="h4">No Results Found</span>
+        </div>
+      </div>
+    </div>
+    <!--end of no results-->
+    <!--start of a modal-->
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-2 container">
+                <div class="card border-0 m-2" style="width:5rem" *ngFor="let image of selectedPost.selectedImages">
+                  <img src="{{image.linktoimage}}" class="card-img-top" alt="loading">
+                </div>
+              </div>
+              <div class="col-5">
+                <div class="card border-0 m-2 bg-pimary" style="width:27rem">
+                  <img src="{{quickViewCarousel.selectedImage}}" class="card-img-top" alt="loading">
+                  <div class="card-body d-flex justify-content-between floating-row">
+                    <div class="btn btn-dark btn-sm" (click)="_carouselHandler('prev')">prev</div>
+                    <div class="btn btn-dark btn-sm" (click)="_carouselHandler('next')">next</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-5 container">
+                <p class="lead m-3">{{selectedPost.name}}</p>
+                <div class="m-3">
+                  <span [ngClass]="selectedPost.amount != _discountedPrice(selectedPost)?'line-through text-small':''"
+                    class="h5">
+                    {{ selectedPost.amount | currency:'RWF' }}
+                  </span>
+                  <span *ngIf="selectedPost.amount != _discountedPrice(selectedPost)" class="h5">
+                    {{_discountedPrice(selectedPost) | currency:'RWF'}}</span>
+                </div>
+                <p class="m-3 text-muted">{{selectedPost.description}}</p>
+                <div class="row ml-3 mr-3">
+                  <div class="mt-4 d-flex align-items-center">
+                    <span *ngFor="let category of categories" class="badge badge-light text-capitalize m-1"
+                      [ngClass]="category.id != selectedPost.catid?'hide':''">
+                      {{category.name}}
+                    </span>
+                    <span *ngFor="let gender of genders" class="badge badge-light text-capitalize m-1"
+                      [ngClass]="gender.id != selectedPost.genderid?'hide':''">
+                      {{gender.name}}
+                    </span>
+                  </div>
+                </div>
+                <div class="container">
+                  <div class="">
+                    <div class="row ml-3 mr-3 mt-5">
+                      <div class="col-2 d-flex justify-content-center align-items-center text-small">
+                        Instock
+                      </div>
+                      <div class="col-10">
+                        <span class="m-1">{{selectedPost.instock}}</span>
+                      </div>
+                    </div>
+                    <div class="row ml-3 mr-3 mt-2">
+                      <div class="col-2 d-flex justify-content-center align-items-center">
+                        Size
+                      </div>
+                      <div class="col-10">
+                        <ng-template [ngIf]="selectedPost.sizes.productType == 1">
+                          <span *ngFor="let sSize of selectedPost.sizes.data" class="m-1">{{sSize.size}}</span>
+                        </ng-template>
+                        <ng-template [ngIf]="selectedPost.sizes.productType == 2">
+                          <span *ngFor="let cSize of selectedPost.sizes.data" class="m-1">{{cSize.name}}</span>
+                        </ng-template>
+                      </div>
+                    </div>
+                    <div class="row m-3">
+                      <div class="col-2 d-flex justify-content-center align-items-center">
+                        Color
+                      </div>
+                      <div class="col-10">
+                        <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="selectedPost.selectedColor"
+                          (ngModelChange)="_onColorChange()">
+                          <option *ngFor="let color of selectedPost.linktoimage" value="{{color.colorinfo.name}}">
+                            {{color.colorinfo.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="container-fluid d-flex justify-content-center mt-3">
+                  <div class="animated heartBeat infinite delay-2s slow">
+                    call us on {{shopinfo[0].phone}}
+                  </div>
+                </div>
+                <div class="container-fluid d-flex justify-content-center mt-3 align-items-center">
+                  <div class="m-1 border-right">
+                    <i class="fas fa-heart m-1 animated" (click)="_onLike()"
+                      [ngClass]="selectedPost.liked == 1 || selectedPost.like == 1?'text-accent':'text-gray'"></i>
+                  </div>
+                  <i class="fab fa-facebook-f m-1 text-gray animated fadeInRight"></i>
+                  <i class="fab fa-twitter m-1 text-gray animated fadeInRight delay-1s"></i>
+                  <i class="fab fa-instagram m-1 text-gray animated fadeInRight delay-2s"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end of a modal-->
+  </div>
+</div>

@@ -49,16 +49,16 @@
             <div>
               <span class="h5">About</span>
             </div>
-            <div class="m-3">
-              <p>{{shopinfo[0].about[0].ourstory}}</p>
+            <div class="m-3 angular-with-newlines">
+              <p>{{shopinfo[0].about.ourstory}}</p>
             </div>
           </div>
           <div class="information-container mt-3">
             <div>
               <span class="h5">Mission</span>
             </div>
-            <div class="m-3">
-              <p>{{shopinfo[0].about[1].mission}}</p>
+            <div class="m-3 angular-with-newlines">
+              <p>{{shopinfo[0].about.mission}}</p>
             </div>
           </div>
         </div>
@@ -108,14 +108,14 @@
               <span class="input-group-text" id="basic-addon1">Our Story</span>
             </div>
             <textarea type="text" class="form-control" placeholder="Location" aria-label="Username"
-              aria-describedby="basic-addon1" [(ngModel)]="currentshopinfo[0].about[0].ourstory"></textarea>
+              aria-describedby="basic-addon1" [(ngModel)]="currentshopinfo[0].about.ourstory"></textarea>
           </div>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">Mission</span>
             </div>
             <textarea type="text" class="form-control" placeholder="Location" aria-label="Username"
-              aria-describedby="basic-addon1" [(ngModel)]="currentshopinfo[0].about[1].mission"></textarea>
+              aria-describedby="basic-addon1" [(ngModel)]="currentshopinfo[0].about.mission"></textarea>
           </div>
         </div>
         <div class="modal-footer border-0">

@@ -21,22 +21,22 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-hover-accent">Blog</a>
+            <a class="nav-link text-hover-accent" (click)="_changeRoute('/home/blog')" [ngClass]="(currentRoute=='/home/blog')?'text-dark':'text-gray'">Blog</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-hover-accent">About us</a>
+            <a class="nav-link text-hover-accent" (dblclick)="_changeRoute('/admin')" (click)="_changeRoute('/home/about-us')" [ngClass]="(currentRoute=='/home/about-us')?'text-dark':'text-gray'">About us</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-hover-accent">Contact us</a>
+            <a class="nav-link text-hover-accent" (click)="_changeRoute('/home/contact-us')" [ngClass]="(currentRoute=='/home/contact-us')?'text-dark':'text-gray'">Contact us</a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0 row mr-5">
-          <div class="search-container">
-            <input class="input-container" text="text" placeholder="search" />
-            <i class="fa fa-search" id="search-icon"></i>
+        <div class="form-inline my-2 my-lg-0 row mr-5 form">
+          <div class="search-container" [ngClass]="(currentRoute=='/home/search')?'hide':''">
+            <input class="input-container" text="text" placeholder="search" [(ngModel)]="search" (keyup.enter)="_goToSearch()"/>
+            <i class="fa fa-search" id="search-icon" (click)="_goToSearch()"></i>
           </div>
-          <i class="fas fa-heart text-hover-accent mr-5" [ngClass]="likedPostExists?'text-accent':'text-dark'"></i>
-        </form>
+          <i class="fas fa-heart text-hover-accent mr-5" [ngClass]="likedPostExists?'text-accent':'text-dark'" (click)="_goToLiked()"></i>
+        </div>
       </div>
     </nav>
   </div>

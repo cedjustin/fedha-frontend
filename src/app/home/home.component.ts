@@ -30,9 +30,20 @@ export class HomeComponent implements OnInit {
   likedPosts = [];
   likedPostExists = false;
   currentRoute: any;
+  search = null;
 
   _getCurrentRoute() {
     this.currentRoute = this.router.url;
+  }
+
+  _getShopInfo() {
+    this.http._getShopInfo().subscribe(
+      res => {
+        localStorage.setItem('shopinfo', JSON.stringify(res.response.data));
+      },
+      err => {
+      }
+    );
   }
 
   // a function to get local data
@@ -50,10 +61,27 @@ export class HomeComponent implements OnInit {
     this.router.navigate([route]);
   }
 
+  _goToSearch() {
+    if (this.search === null) {
+
+    } else {
+      localStorage.setItem('searchedValue', this.search);
+      this.router.navigate(['/home/search']);
+    }
+  }
+
+  _goToLiked() {
+    const likedPosts = JSON.parse(localStorage.getItem('likedPosts'));
+    if (likedPosts === null || likedPosts.length === 0) { } else {
+      this.router.navigate(['/home/liked-products']);
+    }
+  }
+
 
   ngOnInit() {
     this._getCurrentRoute();
-    setInterval(() => { this._checkLikedPosts(); }, 1000);
+    this._getShopInfo();
+    setInterval(() => { this._checkLikedPosts(); this._getCurrentRoute(); }, 1000);
   }
 
   @HostListener('window:scroll', ['$event'])

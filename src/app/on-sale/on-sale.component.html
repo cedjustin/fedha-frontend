@@ -41,16 +41,19 @@
       <div class="card-title">
         <span>exp: </span><strong>{{_getMoment(post.saleexp)}}</strong>
       </div>
-      <star-rating value="{{post.rate}}" checkedcolor="#AF996B" uncheckedcolor="gray" size="24px" readonly="false"
-        (rate)="onRate($event)"></star-rating>
       <a href="#" class="text-decoration-none">
         <p class="card-text text-gray">{{post.description}}</p>
       </a>
       <div class="divider mt-4"></div>
       <div class="mt-3">
         <div class="card-title">
-          <span>In stock:</span><span> {{currentPost.instock}}</span><br>
-          <span class="h6"> {{ currentPost.amount | currency:'RWF'}}</span>
+          <div class="d-flex justify-content-center">
+            <span class="h6 text-small" [ngClass]="post.amount != _discountedPrice(post)?'linethrough':''">
+              {{ post.amount | currency:'RWF' }}
+            </span>
+            <span class="h6 text-small" *ngIf="post.amount != _discountedPrice(post)">
+              {{_discountedPrice(post) | currency:'RWF'}}</span>
+          </div>
         </div>
         <div class="d-flex justify-content-center">
           <div class="btn btn-outline-secondary btn-sm m-1" data-target="#putOnSaleModal" data-toggle="modal"

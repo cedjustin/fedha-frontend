@@ -1,10 +1,21 @@
 <div class="body">
-    <div class="mt-5">
-        <span  class="hide">hey</span>
+  <!-- <div class="mt-5">
+    <span class="hide">hey</span>
+  </div>
+  <div class="mt-5">
+    <div>
+      <router-outlet></router-outlet>
     </div>
-    <div class="mt-5">
-      <div>
-        <router-outlet></router-outlet>
-      </div>
-    </div>
+  </div> -->
+  <!--start of image background-->
+  <div class="top-img-bck d-flex justify-content-center align-items-center">
+    <span class="h1 text-light">Products</span>
+  </div>
+  <!--end of image background-->
+
+  <!--start of body container-->
+  <div class="body-container">
+    <router-outlet></router-outlet>
+  </div>
+  <!--end of body container-->
 </div>

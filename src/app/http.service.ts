@@ -224,4 +224,14 @@ export class HttpService {
     return this.http.put<any>(this._rootUrl + 'upd-rm-on-sale', data);
   }
 
+  // send an email
+  _postAnEmail(data: object) {
+    return this.http.post<any>(this._rootUrl + 'send-email', data);
+  }
+
+  // get searched data
+  _getSearched(data: object) {
+    return this.http.post<any>(this._rootUrl + 'search', data);
+  }
+
 }

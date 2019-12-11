@@ -28,7 +28,7 @@ export class ShopInfoComponent implements OnInit {
     this.http._getShopInfo().subscribe(
       res => {
         this.shopinfo = res.response.data;
-        this.shopinfo[0].about = JSON.parse(this.shopinfo[0].about);
+        this.shopinfo[0].about = JSON.parse(res.response.data[0].about);
         this.currentshopinfo = this.shopinfo;
         this.loadingData = 0;
       },

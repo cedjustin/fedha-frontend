@@ -123,7 +123,6 @@ export class DashPostComponent implements OnInit {
           this.noPosts = true;
           this.posts = [];
         } else {
-          console.log(res.response.data);
           this.noPosts = false;
           this.posts = res.response.data;
           // restructuring the posts array

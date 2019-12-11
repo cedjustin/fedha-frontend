@@ -1,14 +1,39 @@
-.body{
-  min-height: 10vh;
+.body {
+  min-height: 100vh;
 }
 
 $accent-color: #46b3e6;
 
+.top-img-bck {
+  width: 100%;
+  height: 200px;
+  background-image: url('../../assets/img/bg-01.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-top: 70px;
+}
 
-.btn-carousel-primary {
-  border-radius: 50%;
-  background-color: $accent-color;
-  color: rgb(235, 235, 235);
+.search {
+  height: 70px;
+  width: 100%;
+  border: solid gray 2px;
+  transition: all 0.5s;
+  border-radius: 5px;
+}
+
+.search-input {
+  width: 100%;
+  border: none;
+}
+
+.search-input:focus {
+  width: 100%;
+  border: none !important;
+  outline-width: 0;
+}
+
+.fa-search{
+  cursor: pointer;
 }
 
 .card {
@@ -72,13 +97,6 @@ $accent-color: #46b3e6;
   border: solid $accent-color 1px;
 }
 
-.search {
-  height: 70px;
-  width: 100%;
-  border: solid gray 1px;
-  transition: all 0.5s;
-}
-
 .noSearch {
   height: 0px !important;
   width: 100%;
@@ -92,17 +110,6 @@ $accent-color: #46b3e6;
 
 .noSearch>.search-input {
   display: none;
-}
-
-.search-input {
-  width: 100%;
-  border: none;
-}
-
-.search-input:focus {
-  width: 100%;
-  border: none !important;
-  outline-width: 0;
 }
 
 .filter {
@@ -244,8 +251,4 @@ $accent-color: #46b3e6;
 
 .fa-heart{
   animation-name: pulse
-}
-
-.text-small{
-  font-size: 15px
 }

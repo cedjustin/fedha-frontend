@@ -48,17 +48,33 @@ export class ProductsComponent implements OnInit {
     condition: null,
     value: null
   };
+  shopinfo: any;
 
   constructor(private http: HttpService, private router: Router) { }
-
-  changeShowSearch() {
-    this.showSearch = !this.showSearch;
-    this.showFilter = false;
-  }
 
   changeFilterSearch() {
     this.showSearch = false;
     this.showFilter = !this.showFilter;
+  }
+
+  _getShopInfo() {
+    this.http._getShopInfo().subscribe(
+      res => {
+        localStorage.setItem('shopinfo', JSON.stringify(res.response.data));
+        this._getLocalData();
+      },
+      err => {
+      }
+    );
+  }
+
+  _getLocalData() {
+    const value = JSON.parse(localStorage.getItem('shopinfo'));
+    if (value == null) {
+      this._getShopInfo();
+    } else {
+      this.shopinfo = value;
+    }
   }
 
   // get posts by conditions
@@ -192,6 +208,7 @@ export class ProductsComponent implements OnInit {
           this.router.navigate(['/admin/dashboard/gender']);
         } else {
           this.allcolors = res.response.data;
+          localStorage.setItem('colors', JSON.stringify(this.allcolors));
         }
       },
       err => {
@@ -494,12 +511,38 @@ export class ProductsComponent implements OnInit {
     }
   }
 
+
+  _getData() {
+    const value = localStorage.getItem('sortstatus');
+    if (value == null) {
+      this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
+    } else {
+      if (value === 'female') {
+        this.sortStatus = 'female';
+        this.selectedTab = {
+          condition: 'genderid',
+          value: JSON.stringify(6)
+        };
+        this._getPostsByConditions('genderid', JSON.stringify(this.offset), JSON.stringify(6));
+      } else if (value === 'male') {
+        this.sortStatus = 'male';
+        this.selectedTab = {
+          condition: 'genderid',
+          value: JSON.stringify(4)
+        };
+        this._getPostsByConditions('genderid', JSON.stringify(this.offset), JSON.stringify(4));
+      } else {
+        this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
+      }
+    }
+  }
+
   ngOnInit() {
+    this._getLocalData();
     this._getColors();
     this._getCategory();
     this._getGender();
     this._getTypes();
-    this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
+    this._getData();
   }
-
 }

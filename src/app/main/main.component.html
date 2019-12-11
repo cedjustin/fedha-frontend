@@ -1,27 +1,33 @@
-<div>
+<div class="activity-indicator-container container d-flex justify-content-center align-items-center" *ngIf="loading==1">
+  <div class="lds-ripple">
+    <div></div>
+    <div></div>
+  </div>
+</div>
 
+<div *ngIf="loading != 1">
   <!--start of carousel-->
   <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="../../assets/img/slide-01.jpg" class="d-block w-100 animated fadeIn" alt="...">
+        <img src="{{carouselData[0].linktoimage}}" class="d-block w-100 animated fadeIn" alt="...">
         <div class="carousel-caption d-none d-md-block animated bounceInUp mb-5">
-          <h1 class="display-2">Second slide label</h1>
-          <button class="btn btn-outline-dark">SHOP NOW</button>
+          <h1 class="display-2 text-capitalize">{{carouselData[0].name}}</h1>
+          <button class="btn btn-outline-dark" routerLink="/home/shop">SHOP NOW</button>
         </div>
       </div>
       <div class="carousel-item">
-        <img src="../../assets/img/slide-02.jpg" class="d-block w-100 animated fadeIn" alt="...">
+        <img src="{{carouselData[1].linktoimage}}" class="d-block w-100 animated fadeIn" alt="...">
         <div class="carousel-caption d-none d-md-block animated bounceInUp mb-5">
-          <h5 class="display-2">Second slide label</h5>
-          <button class="btn btn-outline-dark">SHOP NOW</button>
+          <h5 class="display-2 text-capitalize">{{carouselData[1].name}}</h5>
+          <button class="btn btn-outline-dark" routerLink="/home/shop">SHOP NOW</button>
         </div>
       </div>
       <div class="carousel-item">
-        <img src="../../assets/img/slide-03.jpg" class="d-block w-100 animated fadeIn" alt="...">
+        <img src="{{carouselData[2].linktoimage}}" class="d-block w-100 animated fadeIn" alt="...">
         <div class="carousel-caption d-none d-md-block animated bounceInUp mb-5">
-          <h5 class="display-2">Second slide label</h5>
-          <button class="btn btn-outline-dark">SHOP NOW</button>
+          <h5 class="display-2 text-capitalize">{{carouselData[2].name}}</h5>
+          <button class="btn btn-outline-dark" routerLink="/home/shop">SHOP NOW</button>
         </div>
       </div>
     </div>
@@ -45,7 +51,7 @@
           <h3 class="card-title text-dark">WOMEN</h3>
           <p class="card-text text-dark">NEW TREND</p>
           <div class="card-last-part">
-            <span class="fade-in-text btn btn-dark">SHOP NOW</span>
+            <span class="fade-in-text btn btn-dark" (click)="_navigate('female')">SHOP NOW</span>
           </div>
         </div>
       </div>
@@ -55,7 +61,7 @@
           <h3 class="card-title text-dark">MEN</h3>
           <p class="card-text text-dark">NEW TREND</p>
           <div class="card-last-part">
-            <span class="fade-in-text btn btn-dark">SHOP NOW</span>
+            <span class="fade-in-text btn btn-dark" (click)="_navigate('male')">SHOP NOW</span>
           </div>
         </div>
       </div>

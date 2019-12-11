@@ -15,6 +15,11 @@ import { ShopComponent } from './shop/shop.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import { ShopInfoComponent } from './shop-info/shop-info.component';
 import { DashBlogComponent } from './dash-blog/dash-blog.component';
+import { HomeBlogComponent } from './home-blog/home-blog.component';
+import { HomeAboutComponent } from './home-about/home-about.component';
+import { HomeContactComponent } from './home-contact/home-contact.component';
+import { HomeSearchComponent } from './home-search/home-search.component';
+import { HomeLikedComponent } from './home-liked/home-liked.component';
 
 
 const routes: Routes = [
@@ -41,6 +46,26 @@ const routes: Routes = [
             component: ProductsComponent
           }
         ]
+      },
+      {
+        path: 'blog',
+        component: HomeBlogComponent
+      },
+      {
+        path: 'about-us',
+        component: HomeAboutComponent
+      },
+      {
+        path: 'contact-us',
+        component: HomeContactComponent
+      },
+      {
+        path: 'search',
+        component: HomeSearchComponent
+      },
+      {
+        path: 'liked-products',
+        component: HomeLikedComponent
       }
     ]
   },
