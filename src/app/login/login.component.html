@@ -3,6 +3,9 @@
     <div class="row">
       <div class="col-4 d-flex justify-content-center align-items-center">
         <form class="form-signin text-input-container container">
+          <div class="container d-flex justify-content-center mb-5" routerLink="/home">
+            <span class="display-4 brand">Fedha</span>
+          </div>
           <ng-template [ngIf]="loginResponse.response.error == 1">
             <div class="alert alert-warning fade show" role="alert">
               {{loginResponse.response.message}}.
@@ -10,20 +13,20 @@
           </ng-template>
           <div class="row m-2 row-part">
             <div class="col-2 d-flex justify-content-center align-items-center">
-                <i class="fas fa-user"></i>
+              <i class="fas fa-user"></i>
             </div>
             <div class="col-10">
-              <input type="text" placeholder="Username" class="text-input m-2 form-control" [(ngModel)]='loginUserData.username'
-                name='loginUserData.username' />
+              <input type="text" placeholder="Username" class="text-input m-2 form-control"
+                [(ngModel)]='loginUserData.username' name='loginUserData.username' />
             </div>
           </div>
           <div class="row m-2 row-part">
             <div class="col-2 d-flex justify-content-center align-items-center">
-                <i class="fas fa-key"></i>
+              <i class="fas fa-key"></i>
             </div>
             <div class="col-10">
-              <input type="password" placeholder="Username" class="text-input m-2 form-control" [(ngModel)]='loginUserData.password'
-                name='loginUserData.password' />
+              <input type="password" placeholder="Username" class="text-input m-2 form-control"
+                [(ngModel)]='loginUserData.password' name='loginUserData.password' />
             </div>
           </div>
           <div class="row">

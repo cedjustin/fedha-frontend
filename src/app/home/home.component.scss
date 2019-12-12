@@ -1,4 +1,9 @@
 $accent-color: #46b3e6;
+$desktop: 960px;
+$tablet: 768px;
+$mobileLarge: 640px;
+$mobile: 480px;
+$mobileSmall: 300px;
 
 .text-hover-accent:hover {
   color: $accent-color;
@@ -7,6 +12,25 @@ $accent-color: #46b3e6;
 
 .text-accent {
   color: $accent-color !important
+}
+
+@media screen and (max-width: $tablet) {
+  .search-container {
+    margin-left: 70px;
+  }
+
+  .collapse{
+    background-color: white;
+    border-radius: 5px;
+  }
+
+  .z-index-1 {
+    z-index: -1;
+  }
+
+  .navbar-nav {
+    margin-left: 20px;
+  }
 }
 
 .z-index-1 {
@@ -83,7 +107,7 @@ $accent-color: #46b3e6;
   transition: all 1s;
 }
 
-.search-container{
+.search-container {
   width: 200px;
   cursor: pointer;
 }
@@ -125,6 +149,6 @@ $accent-color: #46b3e6;
   cursor: pointer;
 }
 
-.hide{
+.hide {
   display: none;
 }

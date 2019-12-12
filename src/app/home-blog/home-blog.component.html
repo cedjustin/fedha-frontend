@@ -1,10 +1,12 @@
 <div class="body">
   <div *ngIf="loadingData == 1"
     class="activity-indicator-container container d-flex justify-content-center align-items-center">
-    <div class="lds-ripple">
-      <div></div>
-      <div></div>
-    </div>
+    <div class="lds-grid">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
   </div>
 
   <!--start of all body container-->
@@ -18,7 +20,7 @@
     <!--start of blog row container-->
     <div class="container body">
       <div class="row mt-5 mb-5">
-        <div class="col-8">
+        <div class="col-md-8 col-sm-12">
           <div class="card-columns row d-flex justify-content-center align-items-center">
             <div class="card" style="width: 75rem; border:none" *ngFor="let blog of blogData">
               <img src="{{blog.linktoimage}}" class="card-img-top" alt=".." data-toggle="modal"
@@ -47,8 +49,16 @@
             </div>
           </div>
         </div>
-        <div class="col-4">
-            <div class="lds-grid" *ngIf="onSaleDataLoaded==0"><div></div><div></div><div></div><div>
+        <div class="col-md-4 col-sm-12">
+          <div class="d-flex justify-content-center">
+              <div class="lds-grid" *ngIf="onSaleDataLoaded==0">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div>
+                  </div>
+                </div>
+          </div>
           <div *ngIf="onSaleDataLoaded==1">
             <span class="h4">
               Featured Products
@@ -63,7 +73,8 @@
                     <span class="h6">{{posts[0].name}}</span>
                   </div>
                   <div class="mt-2">
-                    <span class="card-text text-gray" [ngClass]="posts[0].amount != _discountedPrice(posts[0])?'line-through':''">
+                    <span class="card-text text-gray"
+                      [ngClass]="posts[0].amount != _discountedPrice(posts[0])?'line-through':''">
                       {{ posts[0].amount | currency:'RWF' }}
                     </span>
                     <span class="card-text text-gray" *ngIf="posts[0].amount != _discountedPrice(posts[0])">
@@ -80,7 +91,8 @@
                     <span class="h6">{{posts[1].name}}</span>
                   </div>
                   <div class="mt-2">
-                    <span class="card-text text-gray" [ngClass]="posts[1].amount != _discountedPrice(posts[1])?'line-through':''">
+                    <span class="card-text text-gray"
+                      [ngClass]="posts[1].amount != _discountedPrice(posts[1])?'line-through':''">
                       {{ posts[1].amount | currency:'RWF' }}
                     </span>
                     <span class="card-text text-gray" *ngIf="posts[1].amount != _discountedPrice(posts[1])">
@@ -97,7 +109,8 @@
                     <span class="h6">{{posts[2].name}}</span>
                   </div>
                   <div class="mt-2">
-                    <span class="card-text text-gray" [ngClass]="posts[2].amount != _discountedPrice(posts[2])?'line-through':''">
+                    <span class="card-text text-gray"
+                      [ngClass]="posts[2].amount != _discountedPrice(posts[2])?'line-through':''">
                       {{ posts[2].amount | currency:'RWF' }}
                     </span>
                     <span class="card-text text-gray" *ngIf="posts[2].amount != _discountedPrice(posts[2])">

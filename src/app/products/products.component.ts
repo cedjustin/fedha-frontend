@@ -127,6 +127,7 @@ export class ProductsComponent implements OnInit {
   _getPosts(sortby: any, offset: any, order: any) {
     this.loadingPosts = 1;
     const likedPosts = JSON.parse(localStorage.getItem('likedPosts'));
+    this.allcolors = JSON.parse(localStorage.getItem('colors'));
     this.http._getAllPosts(sortby, offset, order).subscribe(
       res => {
         if (res.response.error === 1 && res.response.message === 'you have no posts') {

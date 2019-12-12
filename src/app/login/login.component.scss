@@ -13,19 +13,19 @@ $accent-color: rgb(220, 235, 255);
   border: none;
   border-radius: 5px !important;
   height: 50px;
-  background-color: none!important;
+  background-color: none !important;
 }
 
-.text-input-container{
-  width: 100%!important;
+.text-input-container {
+  width: 100% !important;
 }
 
-.row-part{
+.row-part {
   background-color: rgba(247, 247, 247, 0.705);
   border-radius: 10px;
 }
 
-.col-8{
+.col-8 {
   min-height: 100vh;
 }
 
@@ -33,4 +33,8 @@ $accent-color: rgb(220, 235, 255);
   .hide {
     display: none;
   }
+}
+
+.brand {
+  cursor: pointer;
 }
