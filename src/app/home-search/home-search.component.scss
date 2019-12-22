@@ -3,6 +3,42 @@
 }
 
 $accent-color: #46b3e6;
+$desktop: 960px;
+$tablet: 768px;
+$mobileLarge: 640px;
+$mobile: 480px;
+$mobileSmall: 320px;
+$largeTable: 1024px;
+
+@media screen and (max-width: $mobileLarge) {
+  .product-card{
+    width: 10rem!important;
+  }
+  .small-card{
+    width: 23rem!important;
+  }
+  .search{
+    width: 80%!important;
+  }
+}
+
+@media screen and (max-width: $largeTable) {
+  .small-card{
+    width: 20rem!important;
+  }
+}
+
+@media screen and (max-width: $mobileSmall) {
+  .product-card{
+    width: 7rem!important;
+  }
+  .small-card{
+    width: 15rem!important;
+  }
+  .search{
+    width: 80%!important;
+  }
+}
 
 .top-img-bck {
   width: 100%;

@@ -279,7 +279,7 @@ export class DashPostComponent implements OnInit {
 
   // a function to add a post
   _addPost() {
-    if (this.post.amount === null || this.post.description === null || this.post.categoryid === null) {
+      if (this.post.amount === null || this.post.description === null || this.post.categoryid === null) {
       this.emptyFields = {
         error: true,
         message: 'please fill all fields before you add a product'

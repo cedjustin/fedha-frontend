@@ -1,72 +1,66 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 navbar-expand-md">
-  <div class="navbar-brand d-flex align-items-center justify-content-between col-sm-12 col-md-2 mr-0">
-    <a class="mr-1 d-md-none text-light" href="#sidenav" data-toggle="collapse" data-target="#sidenav">
-      <span data-feather="menu" class="my-1"></span>
-    </a>
-    <span class="text-light">FEDHA</span>
-    <a class="navbar-toggler border-0 p-0" href="#topnav" data-toggle="collapse" data-target="#topnav">
-      <span data-feather="menu" class="my-1"></span>
-    </a>
-  </div>
-  <div class="navbar-collapse collapse" id="topnav">
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-    <ul class="navbar-nav px-3 py-2">
-      <li class="nav-item text-nowrap">
-        <a class="nav-link btn" (click)="signout()">Sign out</a>
-      </li>
-    </ul>
-  </div>
+    <div class="navbar-brand d-flex align-items-center justify-content-between col-sm-12 col-md-2 mr-0">
+        <a class="mr-1 d-md-none text-light" href="#sidenav" data-toggle="collapse" data-target="#sidenav">
+            <span data-feather="menu" class="my-1"></span>
+        </a>
+        <span class="text-light">FEDHA</span>
+        <a class="navbar-toggler border-0 p-0" href="#topnav" data-toggle="collapse" data-target="#topnav">
+            <span data-feather="menu" class="my-1"></span>
+        </a>
+    </div>
+    <div class="navbar-collapse collapse" id="topnav">
+        <div class="w-100"></div>
+        <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
+        <ul class="navbar-nav px-3 py-2">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link btn" (click)="signout()">Sign out</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 <div class="container-fluid">
-  <div class="row navbar-expand-md">
-    <nav class="col-md-3 col-lg-2 bg-dark navbar-collapse collapse sidebar" id="sidenav">
-      <div class="sidebar-sticky flex-column w-100 mt-1">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard')?'active':''"
-              (click)="_changeRoute(route='/admin/dashboard')">
-              <i class="fas fa-border-all mr-3"></i> Products
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/onsale')?'active':''"
-              (click)="_changeRoute(route='/admin/dashboard/onsale')">
-              <i class="fas fa-fire mr-3"></i> On-sale
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/ondiscount')?'active':''"
-              (click)="_changeRoute(route='/admin/dashboard/ondiscount')">
-              <i class="fas fa-arrow-down mr-3"></i> Discounted
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/gender')?'active nav-link':'nav-link'"
-              (click)="_changeRoute(route='/admin/dashboard/gender')">
-              <i class="fas fa-genderless mr-3"></i> G/C/Colors
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/carousel')?'active':''"
-              (click)="_changeRoute(route='/admin/dashboard/carousel')">
-              <i class="fas fa-minus mr-3"></i> Carousel
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/shop-info')?'active':''"
-              (click)="_changeRoute(route='/admin/dashboard/shop-info')">
-              <i class="fas fa-store-alt mr-3"></i> Shop Info
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/blog')?'active':''"
-              (click)="_changeRoute(route='/admin/dashboard/blog')">
-              <i class="fas fa-th-large mr-3"></i> Blog
-            </a>
-          </li>
-        </ul>
-        <!-- <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+    <div class="row navbar-expand-md">
+        <nav class="col-md-3 col-lg-2 bg-dark navbar-collapse collapse sidebar" id="sidenav">
+            <div class="sidebar-sticky flex-column w-100 mt-1">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard')?'active':''" (click)="_changeRoute(route='/admin/dashboard')">
+                            <i class="fas fa-border-all mr-3"></i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/onsale')?'active':''" (click)="_changeRoute(route='/admin/dashboard/onsale')">
+                            <i class="fas fa-fire mr-3"></i> On-sale
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/ondiscount')?'active':''" (click)="_changeRoute(route='/admin/dashboard/ondiscount')">
+                            <i class="fas fa-arrow-down mr-3"></i> Discounted
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/gender')?'active nav-link':'nav-link'" (click)="_changeRoute(route='/admin/dashboard/gender')">
+                            <i class="fas fa-genderless mr-3"></i> G/C/Colors
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/carousel')?'active':''" (click)="_changeRoute(route='/admin/dashboard/carousel')">
+                            <i class="fas fa-minus mr-3"></i> Carousel
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/shop-info')?'active':''" (click)="_changeRoute(route='/admin/dashboard/shop-info')">
+                            <i class="fas fa-store-alt mr-3"></i> Shop Info
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/blog')?'active':''" (click)="_changeRoute(route='/admin/dashboard/blog')">
+                            <i class="fas fa-th-large mr-3"></i> Blog
+                        </a>
+                    </li>
+                </ul>
+                <!-- <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
           <span>Saved reports</span>
           <a class="d-flex align-items-center text-muted" href="#">
             <span data-feather="plus-circle"></span>
@@ -79,11 +73,11 @@
             </a>
           </li>
         </ul> -->
-      </div>
-    </nav>
+            </div>
+        </nav>
 
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-      <router-outlet></router-outlet>
-    </main>
-  </div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
 </div>

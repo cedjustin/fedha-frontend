@@ -22,6 +22,7 @@ export class HomeSearchComponent implements OnInit {
       data: []
     },
     selectedColor: null,
+    selectedImages: null,
     linktoimage: [
       { colorid: '2', pictures: Array(1), colorinfo: {} }
     ]
@@ -278,6 +279,11 @@ export class HomeSearchComponent implements OnInit {
       'background-color': color === undefined ? 'white' : color.colorcode
     };
     return styles;
+  }
+
+  // check selected image length
+  _checkImageLength(images: any) {
+    if (images === null || images.length > 1) { return true } else { return false }
   }
 
   ngOnInit() {

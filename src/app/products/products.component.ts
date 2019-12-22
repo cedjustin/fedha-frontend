@@ -30,6 +30,7 @@ export class ProductsComponent implements OnInit {
       data: []
     },
     selectedColor: null,
+    selectedImages: null
   };
   quickViewCarousel: any = {
     selectedImage: null
@@ -88,6 +89,7 @@ export class ProductsComponent implements OnInit {
           this.posts = [];
           this.loadingPosts = 0;
         } else {
+          console.log(res.response.data);
           this.posts = res.response.data;
           // restructuring the posts array
           this.posts.forEach(post => {
@@ -461,6 +463,17 @@ export class ProductsComponent implements OnInit {
         value: JSON.stringify(type.id)
       };
       this._getPostsByConditions('producttype', JSON.stringify(this.offset), JSON.stringify(type.id));
+    } else if (status === 'accessories') {
+      this.sortStatus = 'accessories';
+      const type = this.types.find(element => {
+        // tslint:disable-next-line: triple-equals
+        return element.name == status;
+      });
+      this.selectedTab = {
+        condition: 'producttype',
+        value: JSON.stringify(type.id)
+      };
+      this._getPostsByConditions('producttype', JSON.stringify(this.offset), JSON.stringify(type.id));
     } else if (status === 'default') {
       this.sortStatus = 'datecreated';
       this.selectedTab = {
@@ -536,6 +549,11 @@ export class ProductsComponent implements OnInit {
         this._getPosts(this.sortBy, JSON.stringify(this.offset), this.order);
       }
     }
+  }
+
+  // check selected image length
+  _checkImageLength(images: any) {
+    if (images === null || images.length > 1) { return true } else { return false }
   }
 
   ngOnInit() {
