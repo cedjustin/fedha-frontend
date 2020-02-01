@@ -11,17 +11,17 @@ export class GenderComponent implements OnInit {
   constructor(private http: HttpService) { }
 
   gender = {
-    name
+    name: null
   };
   category = {
-    name
+    name: null
   };
   color = {
     name: null,
     code: null
   };
   loadingData = 1;
-  connection: object = {
+  connection: any = {
     error: 0,
     message: ''
   };
@@ -31,17 +31,17 @@ export class GenderComponent implements OnInit {
   noGender = false;
   noCategory = false;
   noColors = false;
-  currentCategory: object = {
-    name,
+  currentCategory: any = {
+    name: null,
     id: ''
   };
-  currentColor: object = {
-    name,
+  currentColor: any = {
+    name: null,
     id: '',
     colorcode: ''
   };
-  currentGender: object = {
-    name,
+  currentGender: any = {
+    name: null,
     id: ''
   };
 

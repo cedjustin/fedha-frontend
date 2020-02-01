@@ -22,10 +22,6 @@ export class DashPostComponent implements OnInit {
     description: null,
     linktoimage: null,
     amount: null,
-    instock: null,
-    discount: null,
-    genderid: null,
-    categoryid: null
   };
   currentPage = 1;
   loadingProducts = 1;
@@ -41,7 +37,7 @@ export class DashPostComponent implements OnInit {
     description: null,
     instock: null,
     amount: null,
-    linktoimage: [{ pictures: [{ linktoimage: null }] }],
+    linktoimage: null,
     sizes: {
       productType: null,
       data: [{
@@ -114,6 +110,7 @@ export class DashPostComponent implements OnInit {
     this.loadingProducts = 1;
     this.http._getAllPosts(sortby, offset, order).subscribe(
       res => {
+        console.log(res);
         if (res.error === 1 && res.message === 'you are lost') {
           localStorage.removeItem('token');
           localStorage.removeItem('userinfo');
@@ -125,19 +122,6 @@ export class DashPostComponent implements OnInit {
         } else {
           this.noPosts = false;
           this.posts = res.response.data;
-          // restructuring the posts array
-          this.posts.forEach(post => {
-            post.linktoimage = JSON.parse(post.linktoimage);
-            post.sizes = JSON.parse(post.sizes);
-            // getting colorinfo
-            post.linktoimage.forEach(element => {
-              element.colorinfo = this.allcolors.find(color => {
-                // tslint:disable-next-line: triple-equals
-                return color.id == JSON.parse(element.colorid);
-              });
-            });
-          });
-          this._checkIfSaleExp();
           this.loadingProducts = 0;
         }
       },
@@ -279,31 +263,17 @@ export class DashPostComponent implements OnInit {
 
   // a function to add a post
   _addPost() {
-      if (this.post.amount === null || this.post.description === null || this.post.categoryid === null) {
+      if (this.post.amount === null || this.post.description === null) {
       this.emptyFields = {
         error: true,
         message: 'please fill all fields before you add a product'
       };
-    } else if (this.post.discount === null || this.post.instock === null || this.post.name === null || this.productType === 0) {
+    } else if (this.post.linktoimage === null) {
       this.emptyFields = {
         error: true,
         message: 'please fill all fields before you add a product'
-      };
-    } else if (this._imageColorFieldChecker()) {
-      this.emptyFields = {
-        error: true,
-        message: 'please fill all color and picture field or remove unnecessary fields'
       };
     } else {
-      this.post.linktoimage = this.colors;
-      this.post.sizes = {
-        productType: this.productType,
-        data: this.productType === '1' ? this.shoesSizes : this.clothesSizes
-      };
-      this.emptyFields = {
-        error: false,
-        message: ''
-      };
       this.http._addPost(this.post).subscribe(
         res => {
           if (res.response.error === 0) {
@@ -489,7 +459,7 @@ export class DashPostComponent implements OnInit {
   }
 
   // add a color field on edit post model
-  _updAddColor(i: number) {
+  _updAddColor() {
     this.currentPost.linktoimage.push({
       colorid: null,
       pictures: [
@@ -502,7 +472,7 @@ export class DashPostComponent implements OnInit {
 
 
   // remove a color field on edit post modal
-  _updRemoveColor(i: number, p: number) {
+  _updRemoveColor(i: number) {
     if (this.currentPost.linktoimage.length === 1 && i === 0) { } else {
       this.currentPost.linktoimage.splice(i, 1);
     }

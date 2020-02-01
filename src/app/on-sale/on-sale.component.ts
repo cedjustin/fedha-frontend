@@ -34,7 +34,7 @@ export class OnSaleComponent implements OnInit {
   };
   categories: any;
   genders: any;
-  currentPost: object = {
+  currentPost: any = {
     id: null,
     description: null,
     instock: null,

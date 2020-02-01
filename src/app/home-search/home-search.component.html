@@ -164,7 +164,7 @@
                 </div>
                 <div class="container-fluid d-flex justify-content-center mt-3 align-items-center">
                   <div class="m-1 border-right">
-                    <i class="fas fa-heart m-1 animated" (click)="_onLike()"
+                    <i class="fas fa-heart m-1 animated" (click)="_onLike(selectedPostIndex)"
                       [ngClass]="selectedPost.liked == 1 || selectedPost.like == 1?'text-accent':'text-gray'"></i>
                   </div>
                   <i class="fab fa-facebook-f m-1 text-gray animated fadeInRight"></i>

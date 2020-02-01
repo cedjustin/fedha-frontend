@@ -22,8 +22,8 @@
   <div class="dropdown">
     <div class="btn btn-outline-secondary btn-large">Filter</div>
     <div class="dropdown-content">
-      <a class="dropdown-item btn" (click)="_onSortChange(status='date ascending')">Date: Latest</a>
-      <a class="dropdown-item btn" (click)="_onSortChange(status='date descending')">Date: Oldest</a>
+      <a class="dropdown-item btn" (click)="_onSortChange('date ascending')">Date: Latest</a>
+      <a class="dropdown-item btn" (click)="_onSortChange('date descending')">Date: Oldest</a>
     </div>
   </div>
 </nav>
@@ -105,8 +105,6 @@
                   <span>In stock:</span><span> {{currentPost.instock}}</span>
                   <span class="h6"> {{ currentPost.amount | currency:'RWF' }}</span>
                 </div>
-                <star-rating value="{{currentPost.rate}}" checkedcolor="#AF996B" uncheckedcolor="gray" size="24px"
-                  readonly="false" (rate)="onRate($event)"></star-rating>
                 <a href="#" class="text-decoration-none">
                   <p class="card-text text-gray">{{currentPost.description}}</p>
                 </a>

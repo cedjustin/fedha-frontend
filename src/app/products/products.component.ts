@@ -128,8 +128,6 @@ export class ProductsComponent implements OnInit {
   // a function to get all posts
   _getPosts(sortby: any, offset: any, order: any) {
     this.loadingPosts = 1;
-    const likedPosts = JSON.parse(localStorage.getItem('likedPosts'));
-    this.allcolors = JSON.parse(localStorage.getItem('colors'));
     this.http._getAllPosts(sortby, offset, order).subscribe(
       res => {
         if (res.response.error === 1 && res.response.message === 'you have no posts') {
@@ -137,30 +135,6 @@ export class ProductsComponent implements OnInit {
           this.loadingPosts = 0;
         } else {
           this.posts = res.response.data;
-          // restructuring the posts array
-          this.posts.forEach(post => {
-            if (likedPosts == null) {
-              post.liked = 0;
-            } else {
-              // getting liked posts
-              likedPosts.forEach(liked => {
-                post.liked = post.id === liked.id ? 1 : 0;
-                if (post.id === liked.id) {
-                  post.like = 1;
-                }
-              });
-            }
-            post.linktoimage = JSON.parse(post.linktoimage);
-            post.sizes = JSON.parse(post.sizes);
-            // getting colorinfo
-            post.linktoimage.forEach(element => {
-              element.colorinfo = this.allcolors.find(color => {
-                // tslint:disable-next-line: triple-equals
-                return color.id == JSON.parse(element.colorid);
-              });
-            });
-          });
-          this._checkIfSaleExp();
           this.unfilteredPosts = this.posts;
           this.loadingPosts = 0;
         }

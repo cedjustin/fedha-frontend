@@ -5,16 +5,6 @@
       <span (click)="_onSortChange('default')"
         [ngClass]="sortStatus == 'datecreated'?'border-bottom m-1 btn tab-button active':'border-bottom m-1 btn tab-button'">All
         Products</span>
-      <span (click)="_onSortChange('female')"
-        [ngClass]="sortStatus == 'female'?'border-bottom m-1 btn tab-button active':'border-bottom m-1 btn tab-button'">Women</span>
-      <span (click)="_onSortChange('male')"
-        [ngClass]="sortStatus == 'male'?'border-bottom m-1 btn tab-button active':'border-bottom m-1 btn tab-button'">Men</span>
-      <span (click)="_onSortChange('shoes')"
-        [ngClass]="sortStatus == 'shoes'?'border-bottom m-1 btn tab-button active':'border-bottom m-1 btn tab-button'">Shoes</span>
-      <span (click)="_onSortChange('clothes')"
-        [ngClass]="sortStatus == 'clothes'?'border-bottom m-1 btn tab-button active':'border-bottom m-1 btn tab-button'">Clothes</span>
-      <span (click)="_onSortChange('accessories')"
-        [ngClass]="sortStatus == 'accessories'?'border-bottom m-1 btn tab-button active':'border-bottom m-1 btn tab-button'">Accessories</span>
     </div>
     <div class="ml-auto">
       <button class="btn accent-btn btn-large m-1" (click)="changeFilterSearch()">Filter</button>
@@ -61,7 +51,7 @@
 <div class="container" *ngIf="loadingPosts == 0">
   <div class="card-columns row d-flex justify-content-center">
     <div class="card product-card m-1 animated fadeIn" *ngFor="let post of posts; let i = index" style="width: 13rem;">
-      <img src="{{post.linktoimage[0].pictures[0].linktoimage}}" class="card-img-top top-image-overlay" alt="...">
+      <img src="{{post.linktoimage}}" class="card-img-top top-image-overlay" alt="...">
       <div class="d-flex justify-content-center">
         <div class="btn top-image-overlay-btn" data-toggle="modal" data-target=".bd-example-modal-xl"
           (click)="_selectPost(post,i)">Quick View</div>
@@ -69,16 +59,11 @@
       <div class="card-body t-30">
         <div class="d-flex justify-content-between">
           <p class="card-text text-gray">{{post.name}}</p>
-          <i class="" [ngClass]="post.liked == 1 || post.like == 1?'fas fa-heart text-accent':'far fa-heart text-gray'"
-            (click)="_onLike(i)"></i>
         </div>
         <div class="d-flex justify-content-center">
-          <span class="card-text text-gray" [ngClass]="post.amount != _discountedPrice(post)?'line-through':''">
+          <span class="card-text text-gray">
             {{ post.amount | currency:'RWF' }}
           </span>
-          <span class="card-text text-gray" *ngIf="post.amount != _discountedPrice(post)">
-            -{{_discountedPrice(post) | currency:'RWF'}}</span>
-        </div>
       </div>
     </div>
   </div>
@@ -125,98 +110,25 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <ng-template [ngIf]="_checkImageLength(selectedPost.selectedImages)">
-            <div class="col-md-2 col-lg-2 col-sm-2 container">
-              <div class="card border-0 m-2" style="width:5rem" *ngFor="let image of selectedPost.selectedImages">
-                <img src="{{image.linktoimage}}" class="card-img-top" alt="loading">
-              </div>
-            </div>
-          </ng-template>
           <div class="col-md-10 col-lg-5 col-sm-10">
             <div class="card border-0 m-2 bg-pimary small-card" style="width:27rem">
               <img src="{{quickViewCarousel.selectedImage}}" class="card-img-top" alt="loading">
-              <ng-template [ngIf]="_checkImageLength(selectedPost.selectedImages)">
-                <div class="card-body d-flex justify-content-between floating-row">
-                  <div class="btn btn-dark btn-sm" (click)="_carouselHandler('prev')">prev</div>
-                  <div class="btn btn-dark btn-sm" (click)="_carouselHandler('next')">next</div>
-                </div>
-              </ng-template>
             </div>
           </div>
           <div class="col-md-12 col-lg-5 col-sm-12 container">
             <p class="lead m-3">{{selectedPost.name}}</p>
             <div class="m-3">
-              <span [ngClass]="selectedPost.amount != _discountedPrice(selectedPost)?'line-through text-small':''"
-                class="h5">
+              <span class="h5">
                 {{ selectedPost.amount | currency:'RWF' }}
               </span>
-              <span *ngIf="selectedPost.amount != _discountedPrice(selectedPost)" class="h5">
-                {{_discountedPrice(selectedPost) | currency:'RWF'}}</span>
             </div>
             <p class="m-3 text-muted">{{selectedPost.description}}</p>
-            <div class="row ml-3 mr-3">
-              <div class="mt-4 d-flex align-items-center">
-                <span *ngFor="let category of categories" class="badge badge-light text-capitalize m-1"
-                  [ngClass]="category.id != selectedPost.catid?'hide':''">
-                  {{category.name}}
-                </span>
-                <span *ngFor="let gender of genders" class="badge badge-light text-capitalize m-1"
-                  [ngClass]="gender.id != selectedPost.genderid?'hide':''">
-                  {{gender.name}}
-                </span>
-              </div>
-            </div>
-            <div class="container">
-              <div class="">
-                <div class="row ml-3 mr-3 mt-5">
-                  <div class="col-2 d-flex justify-content-center align-items-center text-small">
-                    Instock
-                  </div>
-                  <div class="col-10">
-                    <span class="m-1">{{selectedPost.instock}}</span>
-                  </div>
-                </div>
-                <div class="row ml-3 mr-3 mt-2">
-                  <div class="col-2 d-flex justify-content-center align-items-center">
-                    <ng-template [ngIf]="selectedPost.sizes.productType != 3">
-                      <span>
-                        Size
-                      </span>
-                    </ng-template>
-                  </div>
-                  <div class="col-10">
-                    <ng-template [ngIf]="selectedPost.sizes.productType == 1">
-                      <span *ngFor="let sSize of selectedPost.sizes.data" class="m-1">{{sSize.size}}</span>
-                    </ng-template>
-                    <ng-template [ngIf]="selectedPost.sizes.productType == 2">
-                      <span *ngFor="let cSize of selectedPost.sizes.data" class="m-1">{{cSize.name}}</span>
-                    </ng-template>
-                  </div>
-                </div>
-                <div class="row m-3">
-                  <div class="col-2 d-flex justify-content-center align-items-center">
-                    Color
-                  </div>
-                  <div class="col-10">
-                    <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="selectedPost.selectedColor"
-                      (ngModelChange)="_onColorChange()">
-                      <option *ngFor="let color of selectedPost.linktoimage" value="{{color.colorinfo.name}}">
-                        {{color.colorinfo.name}}</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div class="container-fluid d-flex justify-content-center mt-3">
               <div class="animated heartBeat infinite delay-2s slow">
                 call us on {{shopinfo[0].phone}}
               </div>
             </div>
             <div class="container-fluid d-flex justify-content-center mt-3 align-items-center">
-              <div class="m-1 border-right">
-                <i class="fas fa-heart m-1 animated" (click)="_onLike()"
-                  [ngClass]="selectedPost.liked == 1 || selectedPost.like == 1?'text-accent':'text-gray'"></i>
-              </div>
               <i class="fab fa-facebook-f m-1 text-gray animated fadeInRight"></i>
               <i class="fab fa-twitter m-1 text-gray animated fadeInRight delay-1s"></i>
               <i class="fab fa-instagram m-1 text-gray animated fadeInRight delay-2s"></i>

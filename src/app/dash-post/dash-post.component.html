@@ -28,10 +28,10 @@
   <div class="dropdown">
     <div class="btn btn-outline-secondary btn-large">Filter</div>
     <div class="dropdown-content">
-      <a class="dropdown-item btn" (click)="_onSortChange(status='date ascending')">Date: Latest</a>
-      <a class="dropdown-item btn" (click)="_onSortChange(status='date descending')">Date: Oldest</a>
-      <a class="dropdown-item btn" (click)="_onSortChange(status='amount high to low')">Price: Low to High</a>
-      <a class="dropdown-item btn" (click)="_onSortChange(status='amount low to high')">Price: High to Low</a>
+      <a class="dropdown-item btn" (click)="_onSortChange('date ascending')">Date: Latest</a>
+      <a class="dropdown-item btn" (click)="_onSortChange('date descending')">Date: Oldest</a>
+      <a class="dropdown-item btn" (click)="_onSortChange('amount high to low')">Price: Low to High</a>
+      <a class="dropdown-item btn" (click)="_onSortChange('amount low to high')">Price: High to Low</a>
     </div>
   </div>
 </nav>
@@ -40,49 +40,23 @@
 <!--start of second row-->
 <div class="row justify-content-center mt-3">
   <div class="card animated fadeIn" *ngFor="let post of posts">
-    <img src="{{post.linktoimage[0].pictures[0].linktoimage}}" class="card-img-top" alt="...">
+    <img src="{{post.linktoimage}}" class="card-img-top" alt="...">
     <div class="card-body">
       <div class="card-title">
         <div>
           <p class="h6">{{post.name}}</p>
           <p class="mt-1 text-truncate">{{post.description}}</p>
         </div>
-        <span>In stock:</span><span> {{post.instock}}</span><span *ngIf="post.onsale == 1">/</span><strong
-          class="text-danger" *ngIf="post.onsale == 1"> on sale</strong>
-      </div>
-      <ng-template [ngIf]="post.sizes.productType == 1">
-        <span>size: </span> <span *ngFor="let sSize of post.sizes.data"> {{sSize.size}}</span>
-      </ng-template>
-      <ng-template [ngIf]="post.sizes.productType == 2">
-        <span>size: </span> <span *ngFor="let cSize of post.sizes.data"> {{cSize.name}}</span>
-      </ng-template>
-      <div class="mt-4 d-flex align-items-center">
-        <span *ngFor="let category of categories" class="text-small text-capitalize"
-          [ngClass]="category.id != post.catid?'hide':''">
-          {{category.name}}
-        </span>
-        <span> / </span>
-        <span *ngFor="let gender of genders" class="text-small text-capitalize animated fadeIn delay-1s"
-          [ngClass]="gender.id != post.genderid?'hide':''">
-          {{gender.name}}
-        </span>
-        <span *ngFor="let dbcolor of post.linktoimage" class="dot m-1 animated fadeIn delay-2s"
-          [ngStyle]="changeBgColor(dbcolor)">
-        </span>
       </div>
       <div class="mt-3">
         <div class="d-flex justify-content-center">
-          <span class="h6 text-small" [ngClass]="post.amount != _discountedPrice(post)?'linethrough':''">
+          <span class="h6 text-small">
             {{ post.amount | currency:'RWF' }}
           </span>
-          <span class="h6 text-small" *ngIf="post.amount != _discountedPrice(post)">
-            {{_discountedPrice(post) | currency:'RWF'}}</span>
         </div>
         <div class="d-flex justify-content-center">
           <div class="btn btn-outline-primary btn-sm m-1" data-target="#editExampleModal"
             (click)="_getCurrentPost(post)" data-toggle="modal">Edit</div>
-          <div class="btn btn-outline-secondary btn-sm m-1" data-target="#putOnSaleModal" data-toggle="modal"
-            *ngIf="post.onsale != 1" (click)="_getCurrentPost(post)">Sale</div>
           <div class="btn btn-outline-danger btn-sm m-1" (click)="_delPost(post.id)">Delete</div>
         </div>
       </div>
@@ -135,163 +109,13 @@
               <div class="input-group mb-3">
                 <input type="number" class="form-control" placeholder="Amount" aria-label="Username"
                   aria-describedby="basic-addon1" [(ngModel)]="post.amount">
-                <input type="number" class="form-control" placeholder="instock" aria-label="Username"
-                  aria-describedby="basic-addon1" [(ngModel)]="post.instock">
-                <input type="number" class="form-control" placeholder="Discount" aria-label="Username"
-                  aria-describedby="basic-addon1" [(ngModel)]="post.discount">
-              </div>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <div class="input-group mb-3">
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Gender</label>
-                  </div>
-                  <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="post.genderid">
-                    <option selected disabled>Gender...</option>
-                    <option *ngFor="let gender of genders" value="{{gender.id}}">{{gender.name}}</option>
-                  </select>
-                </div>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Category</label>
-                  </div>
-                  <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="post.categoryid">
-                    <option selected disabled>Category...</option>
-                    <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
-                  </select>
-                </div>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect01">Type</label>
-                </div>
-                <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="productType">
-                  <option selected disabled>Product type...</option>
-                  <option value="1">Shoes</option>
-                  <option value="2">Clothes</option>
-                  <option value="3">Accessories</option>
-                </select>
-              </div>
-              <ng-template [ngIf]="productType == 0" [ngIfElse]="showSizes"></ng-template>
-              <ng-template #showSizes>
-                <ng-template [ngIf]="productType == 1">
-                  <div *ngFor="let shoesSize of shoesSizes; let i = index" class="row m-3">
-                    <div class="col-8">
-                      <div class="input-group">
-                        <input type="number" class="form-control" placeholder="size" aria-label="Username"
-                          aria-describedby="basic-addon1" [(ngModel)]="shoesSize.size">
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="row">
-                        <div class="col-6">
-                          <button class="btn rounded-button btn-outline-primary" (click)="_addShoesSize(i)">
-                            <i class="fa fa-plus text-dark"></i>
-                          </button>
-                        </div>
-                        <div class="col-6">
-                          <button class="btn rounded-button btn-outline-danger" (click)="_removeShoesSize(i)">
-                            <i class="fa fa-minus text-dark"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </ng-template>
-                <ng-template [ngIf]="productType == 2">
-                  <div *ngFor="let clothesSize of clothesSizes; let i = index" class="row m-3">
-                    <div class="col-8">
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-                          <label class="input-group-text" for="inputGroupSelect01">Sizes</label>
-                        </div>
-                        <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="clothesSize.name">
-                          <option selected disabled>clothes size...</option>
-                          <option value="SM">SM</option>
-                          <option value="M">M</option>
-                          <option value="L">L</option>
-                          <option value="XL">XL</option>
-                          <option value="XXL">XXL</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="row">
-                        <div class="col-6">
-                          <button class="btn rounded-button btn-outline-primary" (click)="_addClothesSize(i)">
-                            <i class="fa fa-plus text-dark"></i>
-                          </button>
-                        </div>
-                        <div class="col-6">
-                          <button class="btn rounded-button btn-outline-danger" (click)="_removeClothesSize(i)">
-                            <i class="fa fa-minus text-dark"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </ng-template>
-              </ng-template>
-            </div>
-            <div class="col-6">
-              <div class="row mt-2" *ngFor="let color of colors; let i = index">
-                <div class="col-md-8 border-right">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-                          <label class="input-group-text" for="inputGroupSelect01">Color</label>
-                        </div>
-                        <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="color.colorid">
-                          <option selected disabled>Category...</option>
-                          <option *ngFor="let dbcolor of allcolors" value="{{dbcolor.id}}">{{dbcolor.name}}</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row" *ngFor="let picture of color.pictures; let p = index">
-                    <div class="col-md-8">
-                      <div class="input-group mt-3 mb-1">
-                        <input type="text" class="form-control" placeholder="Link to image" aria-label="Username"
-                          aria-describedby="basic-addon1" [(ngModel)]="picture.linktoimage">
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="row">
-                        <div class="col-6 d-flex justify-content-center align-items-center">
-                          <button class="btn btn-outline-primary rounded-button mr-2" (click)="_addPicture(i)">
-                            <i class="fa fa-plus text-dark"></i>
-                          </button>
-                        </div>
-                        <div class="col-6 d-flex justify-content-center align-items-center">
-                          <button class="btn btn-outline-danger rounded-button mr-2" (click)="_removePicture(i,p)">
-                            <i class="fa fa-minus text-dark"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4 d-flex justify-content-center align-items-center">
-                  <div class="row">
-                    <div class="col-6">
-                      <button class="btn rounded-button btn-outline-primary" (click)="_addColor()">
-                        <i class="fa fa-plus text-dark"></i>
-                      </button>
-                    </div>
-                    <div class="col-6">
-                      <button class="btn rounded-button btn-outline-danger" (click)="_removeColor(i)">
-                        <i class="fa fa-minus text-dark"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="input-group mt-3 mb-1">
+              <input type="text" class="form-control" placeholder="Link to image" aria-label="Username"
+                aria-describedby="basic-addon1" [(ngModel)]="post.linktoimage">
             </div>
           </div>
         </div>
@@ -304,7 +128,6 @@
   </div>
 </div>
 <!--end of modal-->
-
 
 <!--start of modal-->
 <div class="modal fade" id="editExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -337,157 +160,10 @@
                 <input type="number" class="form-control" placeholder="Amount" aria-label="Username"
                   aria-describedby="basic-addon1" [(ngModel)]="currentPost.amount" data-toggle="tooltip"
                   data-placement="top" title="Amount">
-                <input type="number" class="form-control" placeholder="instock" aria-label="Username"
-                  aria-describedby="basic-addon1" [(ngModel)]="currentPost.instock" data-toggle="tooltip"
-                  data-placement="top" title="Instock">
-                <input type="number" class="form-control" placeholder="Discount" aria-label="Username"
-                  aria-describedby="basic-addon1" [(ngModel)]="currentPost.discountexp" data-toggle="tooltip"
-                  data-placement="top" title="Discount">
               </div>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect01">Gender</label>
-                </div>
-                <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.genderid">
-                  <option *ngFor="let gender of genders" value="{{gender.id}}"
-                    [ngClass]="gender.id == currentPost.genderid?'hide':''">
-                    <span>{{gender.name}}</span>
-                  </option>
-                </select>
-              </div>
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect01">Category</label>
-                </div>
-                <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentPost.catid">
-                  <option *ngFor="let category of categories" value="{{category.id}}"
-                    [ngClass]="category.id == currentPost.catid?'hide':''">
-                    <span>{{category.name}}</span>
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <ng-template [ngIf]="currentPost.sizes.productType != 3">
-                <span class="h4">Sizes:</span><br>
-              </ng-template>
-              <ng-template [ngIf]="currentPost.sizes.productType == 1">
-                <div *ngFor="let currentShoe of currentPost.sizes.data; let s = index" class="row m-3">
-                  <div class="col-8">
-                    <div class="input-group">
-                      <input type="number" class="form-control" placeholder="size" aria-label="Username"
-                        aria-describedby="basic-addon1" [(ngModel)]="currentShoe.size">
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="row">
-                      <div class="col-6">
-                        <button class="btn rounded-button btn-outline-primary"
-                          (click)="_updAddSize(currentPost.sizes.productType)">
-                          <i class="fa fa-plus text-dark"></i>
-                        </button>
-                      </div>
-                      <div class="col-6">
-                        <button class="btn rounded-button btn-outline-danger" (click)="_updRemoveSize(s)">
-                          <i class="fa fa-minus text-dark"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ng-template>
-              <ng-template [ngIf]="currentPost.sizes.productType == 2">
-                <div *ngFor="let currentClothe of currentPost.sizes.data; let c = index" class="row m-3">
-                  <div class="col-8">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect01">Sizes</label>
-                      </div>
-                      <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="currentClothe.name">
-                        <option selected disabled>clothes size...</option>
-                        <option value="SM">SM</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                        <option value="XL">XL</option>
-                        <option value="XXL">XXL</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="row">
-                      <div class="col-6">
-                        <button class="btn rounded-button btn-outline-primary"
-                          (click)="_updAddSize(currentPost.sizes.productType)">
-                          <i class="fa fa-plus text-dark"></i>
-                        </button>
-                      </div>
-                      <div class="col-6">
-                        <button class="btn rounded-button btn-outline-danger" (click)="_updRemoveSize(c)">
-                          <i class="fa fa-minus text-dark"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ng-template>
-            </div>
-            <div class="col-6">
-              <div class="row mt-2" *ngFor="let color of currentPost.linktoimage; let i = index">
-                <div class="col-md-8 border-right">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-                          <label class="input-group-text" for="inputGroupSelect01">Color</label>
-                        </div>
-                        <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="color.colorid">
-                          <option *ngFor="let dbcolor of allcolors" value="{{dbcolor.id}}"
-                            [ngClass]="dbcolor.id == color.colorid?'hide':''">{{dbcolor.name}}</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row" *ngFor="let picture of color.pictures; let p = index">
-                    <div class="col-md-8">
-                      <div class="input-group mt-3 mb-1">
-                        <input type="text" class="form-control" placeholder="Link to image" aria-label="Username"
-                          aria-describedby="basic-addon1" [(ngModel)]="picture.linktoimage">
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="row">
-                        <div class="col-6 d-flex justify-content-center align-items-center">
-                          <button class="btn btn-outline-primary rounded-button mr-2" (click)="_updAddPicture(i)">
-                            <i class="fa fa-plus text-dark"></i>
-                          </button>
-                        </div>
-                        <div class="col-6 d-flex justify-content-center align-items-center">
-                          <button class="btn btn-outline-danger rounded-button mr-2" (click)="_updRemovePicture(i,p)">
-                            <i class="fa fa-minus text-dark"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4 d-flex justify-content-center align-items-center">
-                  <div class="row">
-                    <div class="col-6">
-                      <button class="btn rounded-button btn-outline-primary" (click)="_updAddColor()">
-                        <i class="fa fa-plus text-dark"></i>
-                      </button>
-                    </div>
-                    <div class="col-6">
-                      <button class="btn rounded-button btn-outline-danger" (click)="_updRemoveColor(i)">
-                        <i class="fa fa-minus text-dark"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
+              <div class="input-group mt-3 mb-1">
+                <input type="text" class="form-control" placeholder="Link to image" aria-label="Username"
+                  aria-describedby="basic-addon1" [(ngModel)]="currentPost.linktoimage">
               </div>
             </div>
           </div>
@@ -496,85 +172,6 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="_updPost()" data-dismiss="modal">Update</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--end of modal-->
-
-
-<!--start of modal-->
-<div class="modal fade" id="putOnSaleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Put on sale</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="d-flex justify-content-center">
-              <img src="../../assets/img/put-on-sale.svg" class="undraws" alt="...">
-            </div>
-            <div class="input-group mt-5">
-              <input type="number" class="form-control" placeholder="days" aria-label="Username"
-                aria-describedby="basic-addon1" [(ngModel)]="onSaleDays">
-            </div>
-          </div>
-          <div class="col-md-6 d-flex justify-content-center">
-            <div class="card" style="width: 22rem!important;border:none">
-              <img src="{{currentPost.linktoimage[0].pictures[0].linktoimage}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                <div class="card-title">
-                  <div>
-                    <p class="h6">{{currentPost.name}}</p>
-                    <p class="mt-1 text-truncate">{{currentPost.description}}</p>
-                  </div>
-                  <span>In stock:</span><span> {{currentPost.instock}}</span>
-                </div>
-                <ng-template [ngIf]="currentPost.sizes.productType == 1">
-                  <span>size: </span> <span *ngFor="let sSize of currentPost.sizes.data"> {{sSize.size}}</span>
-                </ng-template>
-                <ng-template [ngIf]="currentPost.sizes.productType == 2">
-                  <span>size: </span> <span *ngFor="let cSize of currentPost.sizes.data"> {{cSize.name}}</span>
-                </ng-template>
-                <div class="mt-4 d-flex align-items-center">
-                  <span *ngFor="let category of categories" class="text-small text-capitalize"
-                    [ngClass]="category.id != currentPost.catid?'hide':''">
-                    {{category.name}}
-                  </span>
-                  <span> / </span>
-                  <span *ngFor="let gender of genders" class="text-small text-capitalize animated fadeIn delay-1s"
-                    [ngClass]="gender.id != currentPost.genderid?'hide':''">
-                    {{gender.name}}
-                  </span>
-                  <span *ngFor="let dbcolor of currentPost.linktoimage" class="dot m-1 animated fadeIn delay-2s"
-                    [ngStyle]="changeBgColor(dbcolor)">
-                  </span>
-                </div>
-                <div class="mt-3">
-                  <div class="d-flex justify-content-center">
-                    <span class="h6 text-small"
-                      [ngClass]="currentPost.amount != _discountedPrice(currentPost)?'linethrough':''">
-                      {{ currentPost.amount | currency:'RWF' }}
-                    </span>
-                    <span class="h6 text-small" *ngIf="currentPost.amount != _discountedPrice(currentPost)">
-                      {{_discountedPrice(currentPost) | currency:'RWF'}}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal"
-          (click)="_putOnSale(currentPost.id)">Add</button>
       </div>
     </div>
   </div>

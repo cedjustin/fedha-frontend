@@ -25,54 +25,21 @@
             <div class="sidebar-sticky flex-column w-100 mt-1">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard')?'active':''" (click)="_changeRoute(route='/admin/dashboard')">
+                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard')?'active':''" (click)="_changeRoute('/admin/dashboard')">
                             <i class="fas fa-border-all mr-3"></i> Products
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/onsale')?'active':''" (click)="_changeRoute(route='/admin/dashboard/onsale')">
-                            <i class="fas fa-fire mr-3"></i> On-sale
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/ondiscount')?'active':''" (click)="_changeRoute(route='/admin/dashboard/ondiscount')">
-                            <i class="fas fa-arrow-down mr-3"></i> Discounted
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/gender')?'active nav-link':'nav-link'" (click)="_changeRoute(route='/admin/dashboard/gender')">
-                            <i class="fas fa-genderless mr-3"></i> G/C/Colors
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/carousel')?'active':''" (click)="_changeRoute(route='/admin/dashboard/carousel')">
+                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/carousel')?'active':''" (click)="_changeRoute('/admin/dashboard/carousel')">
                             <i class="fas fa-minus mr-3"></i> Carousel
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/shop-info')?'active':''" (click)="_changeRoute(route='/admin/dashboard/shop-info')">
+                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/shop-info')?'active':''" (click)="_changeRoute('/admin/dashboard/shop-info')">
                             <i class="fas fa-store-alt mr-3"></i> Shop Info
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" [ngClass]="(currentRoute=='/admin/dashboard/blog')?'active':''" (click)="_changeRoute(route='/admin/dashboard/blog')">
-                            <i class="fas fa-th-large mr-3"></i> Blog
-                        </a>
-                    </li>
                 </ul>
-                <!-- <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          <span>Saved reports</span>
-          <a class="d-flex align-items-center text-muted" href="#">
-            <span data-feather="plus-circle"></span>
-          </a>
-        </h6>
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span> Report
-            </a>
-          </li>
-        </ul> -->
             </div>
         </nav>
 
