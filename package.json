@@ -29,7 +29,7 @@
     "hamburgers": "^1.1.3",
     "hammerjs": "^2.0.8",
     "jquery": "^3.4.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "ng-starrating": "^1.0.7",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
